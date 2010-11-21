@@ -1,0 +1,13 @@
+Panda 
+Akihito Koriyama
+koriyama@users.sourceforge.jp
+http://www.bear-project.net/
+
+DbugL(print_a)
+Copyright (C) 2004-2009 by Thomas Schüßler <debuglib at atomar dot de>
+GNU Lesser General Public
+http://phpdebuglib.de/
+
+Panda foot print icon
+Mohamed Ibrahim
+http://www.clker.com/profile-9.html
