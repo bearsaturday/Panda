@@ -31,6 +31,8 @@ class Panda_Exception extends ErrorException
      * @param int    $httpStatus HTTP code
      * @param string $message    messsage
      * @param int    $severity   severity
+     *
+     * @return void
      */
     public function __construct($message, $httpStatus = 200, array $info = array())
     {
