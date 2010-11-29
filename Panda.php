@@ -583,7 +583,7 @@ class Panda
             if (isset(self::$_config[self::CONFIG_LOG_PATH])) {
                 $filePath = self::$_config[self::CONFIG_LOG_PATH] . "$id.log";
                 if (!file_exists($filePath)) {
-                    file_put_contents($filePath, "$log\n[Info]:\n" . var_export($info) . "\n[Trace]" . var_export($e->getTrace(), true));
+                    file_put_contents($filePath, "$log\n[Info]:\n" . var_export($info, true) . "\n[Trace]" . var_export($e->getTrace(), true));
                 }
             }
             if (self::$_config['debug'] === true) {
