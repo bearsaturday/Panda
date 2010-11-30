@@ -657,7 +657,7 @@ class Panda
     {
         assert(isset(self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT]));
         $config = self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT];
-        $config = (is_callable($config)) ? call_user_func($config) : $config;
+        $config = (is_callable($config)) ? call_user_func($config) : (is_bool($config ? $config : false));
         $result = ((PHP_SAPI === 'cli') || $config);
         return $result;
     }
