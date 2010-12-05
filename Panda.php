@@ -299,8 +299,8 @@ class Panda
             ini_set('display_errors', 0);
             assert_options(ASSERT_ACTIVE, 0);
             set_exception_handler(array('Panda', 'onException'));
-            function p($e){
-                error_log(print_r($e, true));
+            function p($v){
+                syslog(LOG_INFO, print_r($v, true));
             }
             function t(){}
             function tr(){}
