@@ -136,7 +136,7 @@ class Panda_Debug
             $ouputMode = 'dump';
         }
         $label = (is_object($values)) ? ucwords(get_class($values)) . " $label" : $label;
-        // if not web
+        // if CLI
         if (PHP_SAPI === 'cli') {
             $colorOpenReverse = "\033[7;32m";
             $colorOpenBold = "\033[1;32m";
@@ -176,6 +176,7 @@ class Panda_Debug
             break;
         case 'd' :
         case 'dump' :
+            $file = "<a style=\"color:gray; text-decoration:none;\" target=\"_blank\" href=/__panda/edit/?file=$file>{$file}</a>";
             $dumpLabel = isset($options['label']) ? $options['label'] : "in <span style=\"color:gray\">{$file}</span> on line {$line}$method";
             echo self::dump($values, null, array('label' => $dumpLabel,
                 'var_name' => $varName));
@@ -428,7 +429,6 @@ class Panda_Debug
         $scope = false;
         $prefix = 'unique';
         $suffix = 'value';
-
         $vals = $scope ? $scope : $GLOBALS;
         $old = $var;
         $var = $new = $prefix . rand() . $suffix;
