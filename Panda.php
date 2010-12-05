@@ -297,12 +297,18 @@ class Panda
         }
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             ini_set('display_errors', 0);
-            if (class_exists('PEAR', false)) {
-                PEAR::setErrorHandling(PEAR_Exception );
-                PEAR_ErrorStack::setDefaultCallback(array('Panda','onStackError'));
-            }
             assert_options(ASSERT_ACTIVE, 0);
             set_exception_handler(array('Panda', 'onException'));
+            function p($e){
+                error_log(print_r($e, true));
+            }
+            function t(){}
+            function tr(){}
+            function r(){}
+            if (class_exists('PEAR', false)) {
+                PEAR::setErrorHandling(PEAR_Exception);
+                //PEAR_ErrorStack::setDefaultCallback(array('Panda','onStackError'));
+            }
         } else {
             self::_initDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
