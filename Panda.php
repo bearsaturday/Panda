@@ -330,9 +330,9 @@ class Panda
      */
     private static function _initDebug()
     {
-        include 'Panda/Debug.php';
-        include 'Panda/Debug/util.php';
-        include 'Panda/Exception.php';
+        require_once 'Panda/Debug.php';
+        require_once 'Panda/Debug/util.php';
+        require_once 'Panda/Exception.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
@@ -355,10 +355,10 @@ class Panda
      * Resotre Panda errpr handler
      *
      * <pre>
-     * restore Panda error handler after 'restore_error_handler' or  'restore_exception_handler'
+     * restore Panda error handler after 'restore_error_handler' or 'restore_exception_handler'
      *
      * (Note) Error in reflection 'invoke' method seems unstable,
-     * I think its better unattache handler before invoke then call this method again.
+     * I think its better detache handler before invoke then call this method again.
      * </pre>
      *
      * @returnv void
@@ -461,7 +461,7 @@ class Panda
         if ($file === __FILE__) {
             echo "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in " . __FILE__ ." on line". __LINE__;
             error_log($simpleErrorString);
-            exit();
+            throw new Panda_End_Exception();
         }
         if($_cnt++ > 50) {
             //            ini_set('display_errors', 0);
@@ -560,12 +560,18 @@ class Panda
             $class = get_class($e);
             $body = null;
             $info = array();
-            if ($class === 'ErrorException') {
-                $info['severity'] = $e->getSeverity();
-                $httpCode = 503;
-            } elseif ($class == 'Panda_Exception') {
+            if ($e instanceof Panda_End_Exception) {
+                $ro = $e->getRo();
+                if ($ro instanceof BEAR_Ro) {
+                    $ro->outputHttp();
+                }
+                exit();
+            } elseif ($e instanceof Panda_Exception) {
                 $httpCode = $e->getCode();
                 $body = $e->getMessage();
+            } elseif ($e instanceof ErrorException) {
+                $info['severity'] = $e->getSeverity();
+                $httpCode = 503;
             } else {
                 $info['code'] = $e->getCode();
                 $httpCode = 503;
@@ -595,7 +601,6 @@ class Panda
             if (self::$_config['debug'] === true) {
                 self::error(get_class($e), $e->getCode() . ' ' . $e->getMessage(), $info, $options);
             }
-            exit();
         } catch(Exception $e) {
             $bug = get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
             self::_debugPrint($bug);
