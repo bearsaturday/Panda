@@ -333,6 +333,7 @@ class Panda
         require_once 'Panda/Debug.php';
         require_once 'Panda/Debug/util.php';
         require_once 'Panda/Exception.php';
+        @include_once 'Net/Growl.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
@@ -448,6 +449,9 @@ class Panda
      */
     public static function onDebugPhpError($code, $message, $file, $line, array $errcontext)
     {
+        if (error_reporting() === 0) {
+            return;
+        }
         /**
          * to avoid repeat reported error
          */
@@ -717,6 +721,7 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             return;
         }
+        $fileInfoString = "in {$options['file']} on line {$options['line']}";
         if (self::$_config[self::CONFIG_ENABLE_FIREPHP] && isset($options['severity'])) {
             $fireLevel = FirePHP::ERROR;
             switch (true) {
@@ -733,8 +738,9 @@ class Panda
                     $fireLevel = FirePHP::ERROR;
                     break;
             }
-            FB::send("{$subheading} - in {$options['file']} on line {$options['line']}", $heading, $fireLevel);
+            FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
         }
+        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
@@ -798,6 +804,20 @@ class Panda
             return $output;
         } else {
             echo $output;
+        }
+    }
+
+    public static function growlNotify($title, $description)
+    {
+        if (class_exists('Net_Growl', false)){
+            static $growlApp;
+            
+            if (!$growlApp) {
+                $growlApp = new Net_Growl_Application("Panda", array("Panda_Growl_Notify"));
+            }
+            $growl = @Net_Growl::singleton($growlApp, null, null);
+            $growl->setNotificationLimit(16);
+            $growl->notify("Panda_Growl_Notify", $title, $description);
         }
     }
 
