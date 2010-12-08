@@ -21,31 +21,29 @@
 class Panda_End_Exception extends Exception
 {
     /**
-     * BEAR Resource Object
+     * Object
      *
-     * @var BEAR_Ro
+     * @var object
      */
-    private $_ro;
+    private $_obj;
 
     /**
      * Constructor
      *
-     * @param int    $httpStatus HTTP code
-     * @param string $message    messsage
-     * @param int    $severity   severity
-     *
+     * @param object
+     * 
      * @return void
      */
-    public function __construct(BEAR_Ro $ro = null)
+    public function __construct($obj = null)
     {
-        $this->_ro = $ro;
+        $this->_obj = $obj;
     }
 
     /**
-     * get Resource Object
+     * get object
      * 
      */
-    public function getRo(){
-        return $this->_ro;
+    public function getObject(){
+        return $this->_obj;
     }
 }
