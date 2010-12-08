@@ -1107,7 +1107,7 @@ class Panda
         if (!$serverProtocol || self::isCliOutput()) {
             echo "{$code} {$codeMsg}" . PHP_EOL . PHP_EOL;
         } else {
-            $error = array('color' => 'brown',
+            $error = array('color' => '#FF8C00',
                 'code' => $code,
                 'codeMsg' => $codeMsg,
                 'body' => $body,
