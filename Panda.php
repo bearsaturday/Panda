@@ -807,9 +807,20 @@ class Panda
         }
     }
 
+    /**
+     * Growl notify 
+     * 
+     * This needs.
+     * 
+     * 1) Growl installation.
+     * 2) Growl setting for remote application acception.
+     * 
+     * @param string $title
+     * @param string $description
+     */
     public static function growlNotify($title, $description)
     {
-        if (class_exists('Net_Growl', false)){
+        if (class_exists('Net_Growl', true)){
             static $growlApp;
             
             if (!$growlApp) {
