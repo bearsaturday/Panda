@@ -565,10 +565,6 @@ class Panda
             $body = null;
             $info = array();
             if ($e instanceof Panda_End_Exception) {
-                $ro = $e->getRo();
-                if ($ro instanceof BEAR_Ro) {
-                    $ro->outputHttp();
-                }
                 exit();
             } elseif ($e instanceof Panda_Exception) {
                 $httpCode = $e->getCode();
