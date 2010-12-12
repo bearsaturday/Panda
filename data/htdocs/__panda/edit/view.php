@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>Panda Edit - <?php echo $file;?></title>
 	<link rel="shortcut icon" href="favicon.ico">
@@ -11,9 +11,9 @@
 	<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-	<?php echo "<b>File: </b>{$file}&nbsp;{$save}"; ?>
+	<?php echo "<b>File: </b>{$file}&nbsp;{$save}"; ?><a href="<?php echo $shorter;?>">[-]</a><a href="<?php echo $longer;?>">[+]</a>
 	<div id="<?php echo $id; ?>" class="beditor"
-	    style="background-color:#222222; color:gray; height:800px; border: 10px solid #ddd; -moz-border-radius: 10px; -webkit-border-radius: 10px; visibility: visible;">loading...</div>
+	    style="background-color:#222222; color:gray; height:<?php echo $editorH;?>px; border: 10px solid #ddd; -moz-border-radius: 10px; -webkit-border-radius: 10px; visibility: visible;">loading...</div>
 	<form id="form<?php echo $id; ?>"form style="display: none;">
 	<textarea id="data<?php echo $id; ?>"><?php echo htmlspecialchars($data); ?></textarea>
 	</form>
