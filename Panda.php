@@ -298,7 +298,6 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             ini_set('display_errors', 0);
             assert_options(ASSERT_ACTIVE, 0);
-            set_exception_handler(array('Panda', 'onException'));
             function p($v){
                 syslog(LOG_INFO, print_r($v, true));
             }
@@ -309,6 +308,8 @@ class Panda
                 PEAR::setErrorHandling(PEAR_Exception);
                 //PEAR_ErrorStack::setDefaultCallback(array('Panda','onStackError'));
             }
+            restore_exception_handler();
+            set_exception_handler(array('Panda', 'onException'));
         } else {
             self::_initDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
@@ -666,9 +667,8 @@ class Panda
      */
     public static function isCliOutput()
     {
-        assert(isset(self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT]));
         $config = self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT];
-        $config = (is_callable($config)) ? call_user_func($config) : (is_bool($config ? $config : false));
+        $config = (is_callable($config)) ? call_user_func($config) : (is_bool($config) ? $config : false);
         $result = ((PHP_SAPI === 'cli') || $config);
         return $result;
     }
@@ -804,13 +804,13 @@ class Panda
     }
 
     /**
-     * Growl notify 
-     * 
+     * Growl notify
+     *
      * This needs.
-     * 
+     *
      * 1) Growl installation.
      * 2) Growl setting for remote application acception.
-     * 
+     *
      * @param string $title
      * @param string $description
      */
@@ -818,7 +818,7 @@ class Panda
     {
         if (class_exists('Net_Growl', true)){
             static $growlApp;
-            
+
             if (!$growlApp) {
                 $growlApp = new Net_Growl_Application("Panda", array("Panda_Growl_Notify"));
             }
