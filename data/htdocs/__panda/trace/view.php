@@ -10,7 +10,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js"></script>
-<script type="text/javascript" src="https://bespin.mozilla.com/embed.js"></script>
+<script type="text/javascript" src="/__panda/bespin/embed.js"></script>
 
 <link rel="stylesheet" href="css/default.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/trace.css" type="text/css" media="screen">
