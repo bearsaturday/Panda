@@ -591,7 +591,7 @@ class Panda
             $infoStr =  (method_exists($e, 'getInfo')) ? print_r($e->getInfo(), true) : null;
             $trace = $e->getTraceAsString();
             $class = get_class($e);
-            $log = "[$code] $class - $msg";
+            $log = "[$code] $class - $msg - $infoStr";
             error_log($log);
             if (isset(self::$_config[self::CONFIG_LOG_PATH])) {
                 $filePath = self::$_config[self::CONFIG_LOG_PATH] . "$id.log";
@@ -1160,7 +1160,7 @@ class Panda
     {
         if (self::$_config['debug']) {
             echo $msg;
-        }
+        } 
     }
 
     public static function getErrorStat()
