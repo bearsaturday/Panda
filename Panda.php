@@ -311,7 +311,7 @@ class Panda
             restore_exception_handler();
             set_exception_handler(array('Panda', 'onException'));
         } else {
-            self::_initDebug();
+            self::_initOnDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
                 ob_start(array('Panda', 'onFatalError'));
             }
@@ -329,7 +329,7 @@ class Panda
      *
      * @return void
      */
-    private static function _initDebug()
+    private static function _initOnDebug()
     {
         require_once 'Panda/Debug.php';
         require_once 'Panda/Debug/util.php';
@@ -1160,7 +1160,7 @@ class Panda
     {
         if (self::$_config['debug']) {
             echo $msg;
-        } 
+        }
     }
 
     public static function getErrorStat()
