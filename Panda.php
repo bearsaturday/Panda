@@ -450,6 +450,7 @@ class Panda
      */
     public static function onDebugPhpError($code, $message, $file, $line, array $errcontext)
     {
+        // @?
         if (error_reporting() === 0) {
             return;
         }
@@ -468,13 +469,7 @@ class Panda
             error_log($simpleErrorString);
             throw new Panda_End_Exception();
         }
-        if($_cnt++ > 50) {
-            //            ini_set('display_errors', 0);
-            //            restore_error_handler();
-            return;
-        }
-        // @?
-        if (error_reporting() === 0) {
+        if($_cnt++ > 100) {
             return;
         }
         // valid path ?
@@ -596,7 +591,7 @@ class Panda
             if (isset(self::$_config[self::CONFIG_LOG_PATH])) {
                 $filePath = self::$_config[self::CONFIG_LOG_PATH] . "$id.log";
                 if (!file_exists($filePath)) {
-                    file_put_contents($filePath, "$log\n[Info]:\n" . var_export($info, true) . "\n[Trace]" . var_export($e->getTrace(), true));
+                    file_put_contents($filePath, "$log\n[Info]:\n" . print_r($info, true) . "\n[Trace]" . print_r($e->getTrace(), true));
                 }
             }
             if (self::$_config['debug'] === true) {
@@ -1160,7 +1155,7 @@ class Panda
     {
         if (self::$_config['debug']) {
             echo $msg;
-        }
+        } 
     }
 
     public static function getErrorStat()
