@@ -108,9 +108,9 @@ class Panda_Debug
         // Roならarrayに
         if (class_exists('BEAR_Ro', false) && $values instanceof BEAR_Ro) {
             $values = array('code' => $values->getCode(),
-                'headers' => $values->getHeaders(),
-                'body' => $values->getBody(),
-                'links' => $values->getLinks());
+                'headers' => $values->header,
+                'body' => $values->body,
+                'links' => $values->links);
         }
         if ($ouputMode === null && is_scalar($values)) {
             $ouputMode = 'dump';
