@@ -465,7 +465,7 @@ class Panda
         $simpleErrorString =  "[{$type}] {$message} in {$file} on line {$line}";
         // me ?
         if ($file === __FILE__) {
-            echo "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in " . __FILE__ ." on line". __LINE__;
+            echo "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in [" . __FILE__ ." on line ". __LINE__;
             error_log($simpleErrorString);
             throw new Panda_End_Exception();
         }
@@ -712,7 +712,7 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             return;
         }
-        $fileInfoString = "in {$options['file']} on line {$options['line']}";
+        $fileInfoString = isset($options['file']) ? "in {$options['file']} on line {$options['line']}" : 'in unknown file';
         if (self::$_config[self::CONFIG_ENABLE_FIREPHP] && isset($options['severity'])) {
             $fireLevel = FirePHP::ERROR;
             switch (true) {
@@ -731,7 +731,7 @@ class Panda
             }
             FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
         }
-        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
+//        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
@@ -1155,7 +1155,7 @@ class Panda
     {
         if (self::$_config['debug']) {
             echo $msg;
-        } 
+        }
     }
 
     public static function getErrorStat()
