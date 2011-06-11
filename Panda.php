@@ -252,19 +252,20 @@ class Panda
      *
      * @var array
      */
-    private static $_config = array(self::CONFIG_DEBUG => false,
-    self::CONFIG_VALID_PATH => array('/'),
-    self::CONFIG_LOG_PATH => '/tmp',
-    self::CONFIG_ON_ERROR_FIRED => false,
-    self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
-    self::CONFIG_ON_IS_CLI_OUTPUT => false,
-    self::CONFIG_ENABLE_FIREPHP => true,
-    self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
-    self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
-    self::CONFIG_CATCH_FATAL => false,
-    self::CONFIG_CATCH_STRICT => true,
-    self::CONFIG_PANDA_PATH => '/',
-    self::CONFIG_EDITOR => 0
+    private static $_config = array(
+        self::CONFIG_DEBUG => false,
+        self::CONFIG_VALID_PATH => array('/'),
+        self::CONFIG_LOG_PATH => '/tmp',
+        self::CONFIG_ON_ERROR_FIRED => false,
+        self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
+        self::CONFIG_ON_IS_CLI_OUTPUT => false,
+        self::CONFIG_ENABLE_FIREPHP => true,
+        self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
+        self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
+        self::CONFIG_CATCH_FATAL => false,
+        self::CONFIG_CATCH_STRICT => true,
+        self::CONFIG_PANDA_PATH => '/',
+        self::CONFIG_EDITOR => 0
     );
 
     /**
@@ -291,26 +292,20 @@ class Panda
         $er = error_reporting(false);
         self::$_config = array_merge(self::$_config, $config);
         // reset handler
-        if (self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
-            include_once 'FirePHPCore/FirePHP.class.php';
-            include_once 'FirePHPCore/fb.php';
-        }
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             ini_set('display_errors', 0);
-            assert_options(ASSERT_ACTIVE, 0);
-            function p($v){
+            function p($v = ''){
                 syslog(LOG_INFO, print_r($v, true));
             }
-            function t(){}
-            function tr(){}
-            function r(){}
             if (class_exists('PEAR', false)) {
                 PEAR::setErrorHandling(PEAR_Exception);
-                //PEAR_ErrorStack::setDefaultCallback(array('Panda','onStackError'));
             }
-            restore_exception_handler();
             set_exception_handler(array('Panda', 'onException'));
         } else {
+            if (self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
+                include_once 'FirePHPCore/FirePHP.class.php';
+                include_once 'FirePHPCore/fb.php';
+            }
             self::_initOnDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
                 ob_start(array('Panda', 'onFatalError'));
@@ -664,7 +659,6 @@ class Panda
     {
         return (PHP_SAPI === 'cli');
         $config = self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT];
-        var_dump($config);
         $config = (is_callable($config, false)) ? call_user_func($config) : (is_bool($config) ? $config : false);
         $result = ((PHP_SAPI === 'cli') || $config);
         return $result;
@@ -733,7 +727,7 @@ class Panda
             }
             FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
         }
-//        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
+        //        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
