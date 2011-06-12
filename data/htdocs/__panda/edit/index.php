@@ -13,7 +13,7 @@ if (!is_readable($file)) {
 $data =  file_get_contents($file);
 $id = md5($_GET['file']);
 $moddate = date (DATE_RFC822, filemtime($file));
-$ownerInfo = function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($file)) : array('name'=> 'n/a');
+$ownerInfo = function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($file)) : array('name' => 'n/a');
 $fileperms = substr(decoct(fileperms($file)), 2);;
 $isWritable = is_writable($file);
 $auth = md5(session_id() . $id);

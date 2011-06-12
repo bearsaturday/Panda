@@ -807,7 +807,7 @@ class Panda
      */
     public static function growlNotify($title, $description)
     {
-        if (class_exists('Net_Growl', true)){
+        if (class_exists('Net_Growl', false)){
             static $growlApp;
 
             if (!$growlApp) {
