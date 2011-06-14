@@ -74,78 +74,115 @@ class Panda
 
     /**
      * Package name - Assert
+     *
+     * @var int
      */
     const PACKAGE_ASSERT = 2;
 
     /**
      * Package name - PEAR
+     *
+     * @var int
      */
     const PACKAGE_PEAR = 3;
 
     /**
      * Package name - Exception
+     *
+     * @var string
      */
     const PACKAGE_EXECEPTION = 4;
 
     /**
      * config debug mode
+     *
+     * @var string
      */
     const CONFIG_DEBUG = 'debug';
 
     /**
      * config report project path
+     *
+     * @var string
      */
     const CONFIG_VALID_PATH = 'valid';
 
     /**
      * config log path
+     *
+     * @var string
      */
     const CONFIG_LOG_PATH = 'log_path';
 
     /**
      * config callback on fire
+     *
+     * @var string
      */
     const CONFIG_ON_ERROR_FIRED = 'on_error';
 
     /**
      *  config callback on shutdown script (for logging)
+     *
+     * @var string
      */
     const CONFIG_ON_ERROR_END = 'on_end';
 
     /**
      * config fatal error callback
+     *
+     * @var string
      */
     const CONFIG_ON_FATAL_ERROR = 'on_fatal_error';
 
     /**
      * config エラーをCLIモードで出力するために判断するコールバック
+     *
+     * @var string
      */
     const CONFIG_ON_IS_CLI_OUTPUT = 'on_is_cli_output';
 
     /**
      * config - use firephp ?
+     *
+     * @var string
      */
     const CONFIG_ENABLE_FIREPHP = 'firephp';
 
     /**
      * config - fatal error template
+     *
+     * @var string
      */
     const CONFIG_FATAL_HTML = 'fatal_html';
 
     /**
      * config  - Http503 template
+     *
+     * @var string
      */
     const CONFIG_HTTP_TPL = 'http_tpl';
 
     /**
      * config catch fatal error ?
+     *
+     * @var string
      */
     const CONFIG_CATCH_FATAL = 'catch_fatal';
 
     /**
      * config catch faatal strict error ?
+     *
+     * @var string
      */
     const CONFIG_CATCH_STRICT = 'catch_strict';
+
+    /**
+     * config for growl
+     *
+     * @var string
+     */
+    const CONFIG_GROWL = 'growl';
 
     /**
      * Panda::error options - severity
@@ -253,19 +290,20 @@ class Panda
      * @var array
      */
     private static $_config = array(
-        self::CONFIG_DEBUG => false,
-        self::CONFIG_VALID_PATH => array('/'),
-        self::CONFIG_LOG_PATH => '/tmp',
-        self::CONFIG_ON_ERROR_FIRED => false,
-        self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
-        self::CONFIG_ON_IS_CLI_OUTPUT => false,
-        self::CONFIG_ENABLE_FIREPHP => true,
-        self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
-        self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
-        self::CONFIG_CATCH_FATAL => false,
-        self::CONFIG_CATCH_STRICT => true,
-        self::CONFIG_PANDA_PATH => '/',
-        self::CONFIG_EDITOR => 0
+    self::CONFIG_DEBUG => false,
+    self::CONFIG_VALID_PATH => array('/'),
+    self::CONFIG_LOG_PATH => '/tmp',
+    self::CONFIG_ON_ERROR_FIRED => false,
+    self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
+    self::CONFIG_ON_IS_CLI_OUTPUT => false,
+    self::CONFIG_ENABLE_FIREPHP => true,
+    self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
+    self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
+    self::CONFIG_CATCH_FATAL => false,
+    self::CONFIG_CATCH_STRICT => true,
+    self::CONFIG_PANDA_PATH => '/',
+    self::CONFIG_EDITOR => 0,
+    self::CONFIG_GROWL => false,
     );
 
     /**
@@ -329,7 +367,7 @@ class Panda
         require_once 'Panda/Debug.php';
         require_once 'Panda/Debug/util.php';
         require_once 'Panda/Exception.php';
-        @include_once 'Net/Growl.php';
+        include_once 'Net/Growl.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
@@ -727,7 +765,7 @@ class Panda
             }
             FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
         }
-        //        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
+        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
@@ -807,16 +845,18 @@ class Panda
      */
     public static function growlNotify($title, $description)
     {
-        if (class_exists('Net_Growl', false)){
-            static $growlApp;
+        static $growlApp;
 
-            if (!$growlApp) {
-                $growlApp = new Net_Growl_Application("Panda", array("Panda_Growl_Notify"));
-            }
-            $growl = @Net_Growl::singleton($growlApp, null, null);
-            $growl->setNotificationLimit(16);
-            $growl->notify("Panda_Growl_Notify", $title, $description);
+        if (self::CONFIG_GROWL !== true) {
+            return;
         }
+
+        if (!$growlApp) {
+            $growlApp = new Net_Growl_Application('Panda', array('Panda_Growl_Notify'));
+        }
+        $growl = Net_Growl::singleton($growlApp, null, null);
+        $growl->setNotificationLimit(16);
+        $result = $growl->notify('Panda_Growl_Notify', $title, $description);
     }
 
     /**
@@ -828,7 +868,7 @@ class Panda
      *
      * @return void
      */
-    public static function message($heading, $subheading = "", $info = "")
+    public static function message($heading, $subheading = '', $info = '')
     {
         static $num = 1; //div id number
 
