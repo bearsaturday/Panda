@@ -290,20 +290,20 @@ class Panda
      * @var array
      */
     private static $_config = array(
-    self::CONFIG_DEBUG => false,
-    self::CONFIG_VALID_PATH => array('/'),
-    self::CONFIG_LOG_PATH => '/tmp',
-    self::CONFIG_ON_ERROR_FIRED => false,
-    self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
-    self::CONFIG_ON_IS_CLI_OUTPUT => false,
-    self::CONFIG_ENABLE_FIREPHP => true,
-    self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
-    self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
-    self::CONFIG_CATCH_FATAL => false,
-    self::CONFIG_CATCH_STRICT => true,
-    self::CONFIG_PANDA_PATH => '/',
-    self::CONFIG_EDITOR => 0,
-    self::CONFIG_GROWL => false,
+        self::CONFIG_DEBUG => false,
+        self::CONFIG_VALID_PATH => array('/'),
+        self::CONFIG_LOG_PATH => '/tmp',
+        self::CONFIG_ON_ERROR_FIRED => false,
+        self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
+        self::CONFIG_ON_IS_CLI_OUTPUT => false,
+        self::CONFIG_ENABLE_FIREPHP => true,
+        self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
+        self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
+        self::CONFIG_CATCH_FATAL => false,
+        self::CONFIG_CATCH_STRICT => true,
+        self::CONFIG_PANDA_PATH => '/',
+        self::CONFIG_EDITOR => 0,
+        self::CONFIG_GROWL => false,
     );
 
     /**
@@ -327,6 +327,9 @@ class Panda
      */
     public static function init(array $config = array())
     {
+        if (isset($_GET['_nopanda'])) {
+            return;
+        }
         $er = error_reporting(false);
         self::$_config = array_merge(self::$_config, $config);
         // reset handler
@@ -498,9 +501,8 @@ class Panda
         $simpleErrorString =  "[{$type}] {$message} in {$file} on line {$line}";
         // me ?
         if ($file === __FILE__) {
-            echo "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in [" . __FILE__ ." on line ". __LINE__;
-            error_log($simpleErrorString);
-            throw new Panda_End_Exception();
+            $msg = "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in [" . __FILE__ ." on line ". __LINE__;
+            throw new Exception($msg);
         }
         if($_cnt++ > 100) {
             return;
@@ -724,6 +726,10 @@ class Panda
      */
     public static function error($heading, $subheading = "", $info = "", array $options = array())
     {
+        // return if live
+        if (self::$_config[self::CONFIG_DEBUG] !== true) {
+            return;
+        }
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
             if (class_exists('FB', false)) {
                 $in = isset($options['file']) ? "- in {$options['file']} on line {$options['line']}" : '';
@@ -741,10 +747,6 @@ class Panda
         // Application error callback
         if (is_callable(self::$_config[self::CONFIG_ON_ERROR_FIRED])) {
             call_user_func(self::$_config[self::CONFIG_ON_ERROR_FIRED], $heading, $subheading, $info, $options);
-        }
-        // return if live
-        if (self::$_config[self::CONFIG_DEBUG] !== true) {
-            return;
         }
         $fileInfoString = isset($options['file']) ? "in {$options['file']} on line {$options['line']}" : 'in unknown file';
         if (self::$_config[self::CONFIG_ENABLE_FIREPHP] && isset($options['severity'])) {
@@ -778,7 +780,7 @@ class Panda
         $output = self::_getDebugCss();
         if ($options['trace']) {
             $traceId = uniqid();
-            $traceFile = Panda::getTempDir() . '/trace-' . $traceId . '.log';
+            $traceFile = self::getTempDir() . '/trace-' . $traceId . '.log';
             $refData = self::__addReflectInfo($options['trace']);
             file_put_contents($traceFile, serialize($options['trace']));
             file_put_contents("{$traceFile}.ref.log", serialize($refData));
@@ -815,7 +817,10 @@ class Panda
             // file summary
             if ($options['file']) {
                 $output .= '<h3>Source</h3>';
+                $output .= '<a href="/__panda/edit/?file=' . $options['file'];
+                $output .= '&line=' . $options['line'] . '">';
                 $output .= self::_getFileSummary($options['file'], $options['line'], 6);
+                $output .= '</a>';
                 if ($options['trace']) {
                     // trace summary
                     $output .= '<h3>Trace</h3>';
@@ -958,12 +963,50 @@ class Panda
         return $result;
     }
 
+
     /**
-     * Return file link with text editer.
+     * File summery
      *
-     * <pre>
-     * Only for TextMate now
-     * </pre>
+     * @param string $file file name
+     * @param int    $line line
+     * @param int    $num  show line/2
+     *
+     * @return string
+     */
+    static function _getFileSummary2($file, $line, $num = 6)
+    {
+        static $editorNum = 0;
+        static $oneTimeSetUp = false;
+
+        if (!file_exists($file)) {
+            return ;
+        }
+        if ($oneTimeSetUp === true) {
+            return;
+        }
+        $oneTimeSetUp = true;
+        $result = <<<EOD
+<script src="/__panda/edit/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/__panda/edit/ace/mode-php.js" type="text/javascript" charset="utf-8"></script>
+<div id="editor">
+EOD;
+        $result .= htmlspecialchars(file_get_contents($file));
+        $result .= <<<EOD
+</div>
+<script type="text/javascript">
+window.onload = function() {
+	var editor = ace.edit("editor",{
+		//initialContent:'hello world'
+	});
+	var mode = require("ace/mode/php").Mode;
+	editor.getSession().setMode(new mode());
+};
+EOD;
+        $result .= '</script>';
+        return $result;
+    }
+    /**
+     *  Return file link with text editer.
      *
      * @param string $file    file name
      * @param int    $line    line
