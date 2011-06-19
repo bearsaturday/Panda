@@ -23,10 +23,7 @@ $config['description'] = 'Panda is PHP Error handler and debug/trace print utili
 $config['note'] = 'Initial release';
 $config['dep_php'] = '5.1.3';
 $config['pear_ver'] = '1.6.0';
-/**
- * This is the only setup function needed
- */
-require_once 'PEAR/PackageFileManager2.php';
+
 // recommended - makes PEAR_Errors act like exceptions (kind of)
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
