@@ -14,7 +14,7 @@
  * @link      http://api.Panda-project.net/Panda_Debug/Panda_Debug.html
  */
 
-require_once 'inc/debuglib.php';
+require_once 'vendors/debuglib.php';
 
 /**
  * Panda Debug Class
