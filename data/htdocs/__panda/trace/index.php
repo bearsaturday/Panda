@@ -1,5 +1,5 @@
 <?php
-require_once '../inc/debuglib.php';
+require_once '../vendors/debuglib.php';
 require_once 'Panda.php';
 /**
  * Trace Page Class

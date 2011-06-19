@@ -18,50 +18,9 @@ div.panda {
 div.panda div.panda-header {
 	color: black;
 	background-color: #EEEEEE;
-	border-left: 20px solid {   header_color
+	border-left: 20px solid {         header_color
 }
 
-;
-border-right-color
-
-
-:
-
- 
-
-#FF0000
-
-
-;
-padding
-
-
-:
-
- 
-
-4
-px
-
- 
-
-4
-px
-
-
-;
-position
-
-
-:
-
- 
-
-relative
-
-
-;
-}
 div.panda div.panda-body {
 	border-top: 1px solid darkgray;
 	padding: 4px 24px;
@@ -120,10 +79,18 @@ div.panda code {
 
 div.panda .short-list {
 	background: #F2F9FF url("data:image/png;base64,") no-repeat scroll 0 0;
+	position: realative;
+	width: 800px;
+	height: 400px;
 	color: gray;
 	font-size: 14px;
 	margin: 10px;
 	padding: 20px 70px 8px 20px;
+	text-decoration: none;
+}
+
+div.panda  a {
+	text-decoration: none;
 }
 
 div.panda ol.timeline li {
@@ -171,4 +138,17 @@ div.panda #hit-info {
 	font-family: mono;
 	color: gray;
 	font-style: italic;
+}
+
+#editor {
+	background-color: #FEF49C;
+	width: 800px;
+	hieight: 400px;
+	color: black;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	padding: 4px;
+	position: relative;
+	right: 0;
+	top: 0;
 }
