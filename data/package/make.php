@@ -11,8 +11,11 @@
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: $Id$
  */
-
+error_reporting(E_ERROR);
+require_once 'PEAR.php';
+require_once 'PEAR/PackageFileManager2.php';
 require '../../Panda.php';
+error_reporting(E_ERROR);
 $config['package'] = 'Panda';
 $config['channel'] = 'pear.bear-project.net';
 $config['release_ver'] = Panda::VERSION;
@@ -21,7 +24,7 @@ $config['stability'] = 'beta';
 $config['summery'] = 'Panda PHP Error handler';
 $config['description'] = 'Panda is PHP Error handler and debug/trace print utility.';
 $config['note'] = 'Initial release';
-$config['dep_php'] = '5.1.3';
+$config['dep_php'] = '5.2.0';
 $config['pear_ver'] = '1.6.0';
 
 // recommended - makes PEAR_Errors act like exceptions (kind of)
