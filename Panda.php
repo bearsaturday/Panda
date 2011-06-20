@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.2';
+    const VERSION =  '0.3.3';
 
     /**
      * Package name - App
@@ -817,7 +817,7 @@ class Panda
             // file summary
             if ($options['file']) {
                 $output .= '<h3>Source</h3>';
-                $output .= '<a href="/__panda/edit/?file=' . $options['file'];
+                $output .= '<a style="text-decoration:none;" href="/__panda/edit/?file=' . $options['file'];
                 $output .= '&line=' . $options['line'] . '">';
                 $output .= self::_getFileSummary($options['file'], $options['line'], 6);
                 $output .= '</a>';
@@ -1019,13 +1019,13 @@ EOD;
     {
         $content = ($content) ? $content : "$file on line $line";
         if (self::$_config[self::CONFIG_EDITOR] & self::EDITOR_TEXTMATE) {
-            $textmate = '<a title="Edit with TextMate" border="0" target="_blank" href="txmt://open/?url=file://';
+            $textmate = '<a title="Edit with TextMate" border="0" href="txmt://open/?url=file://';
             $textmate .= $file . '&line=' . $line . '&column=' . $column . '">' . '<img src="/__panda/image/textmate.png" border="0" >' . '</a>';
         } else {
             $textmate = '';
         }
         if (self::$_config[self::CONFIG_EDITOR] & self::EDITOR_BESPIN) {
-            $bespin = '<a title="Edit with Bespin Editor" border="0" target="_blank" href="/__panda/edit/?file=';
+            $bespin = '<a title="Online edit" border="0" href="/__panda/edit/?file=';
             $bespin .= $file . '&line=' . $line . '&column=' . $column . '">' . '<img src="/__panda/image/bespin.png" border="0" >' . '</a>';
         } else {
             $bespin = '';
