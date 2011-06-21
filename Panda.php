@@ -674,7 +674,7 @@ class Panda
             return '';
         }
         $_done = true;
-        $cssPanda = file_get_contents('Panda/Template/debug.css', FILE_USE_INCLUDE_PATH);
+        $cssPanda = file_get_contents('Panda/templates/debug.css', FILE_USE_INCLUDE_PATH);
         $cssPanda = str_replace('{header_color}', $headerColor, $cssPanda);
         $result = '';
         if (false && class_exists('DbugL', false) && method_exists('DbugL', 'html_prefix')) {
