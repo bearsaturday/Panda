@@ -23,7 +23,7 @@ $config['api_ver'] = $config['release_ver'];
 $config['stability'] = 'beta';
 $config['summery'] = 'Panda PHP Error handler';
 $config['description'] = 'Panda is PHP Error handler and debug/trace print utility.';
-$config['note'] = 'Initial release';
+$config['note'] = 'Maintenance release';
 $config['dep_php'] = '5.2.0';
 $config['pear_ver'] = '1.6.0';
 
@@ -67,8 +67,6 @@ $packagexml->addRole('css', 'php');
 $packagexml->addGlobalReplacement('pear-config', '@PEAR-DIR@', 'php_dir');
 $packagexml->addGlobalReplacement('pear-config', '@DATA-DIR@', 'data_dir');
 $packagexml->addGlobalReplacement('pear-config', '@PHP-BIN@', 'bin_dir');
-
-
 
 $packagexml->generateContents();
 //$pkg = &$packagexml->exportCompatiblePackageFile1();

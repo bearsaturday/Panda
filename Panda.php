@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.31';
+    const VERSION =  '0.3.32';
 
     /**
      * Package name - App
@@ -469,7 +469,7 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] === true) {
             self::error('PEAR Error', $error->getCode() . ' ' . $error->getMessage(), $info, $options);
         } else {
-            error_log('PEAR Error', $error->getCode() . ' ' . $error->getMessage(). " in file[{$options['file']}] on line [{$options['line']}");
+            error_log('PEAR Error' .  $error->getCode() . ' ' . $error->getMessage(). " in file[{$options['file']}] on line [{$options['line']}", 0);
         }
     }
 
