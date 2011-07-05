@@ -176,7 +176,7 @@ class Panda_Debug
             break;
         case 'd' :
         case 'dump' :
-            $file = "<a style=\"color:gray; text-decoration:none;\" target=\"_blank\" href=/__panda/edit/?file=$file>{$file}</a>";
+            $file = "<a style=\"color:gray; text-decoration:none;\" target=\"_blank\" href=/__panda/edit/?file=$file&line=$line>{$file}</a>";
             $dumpLabel = isset($options['label']) ? $options['label'] : "in <span style=\"color:gray\">{$file}</span> on line {$line}$method";
             echo self::dump($values, null, array('label' => $dumpLabel,
                 'var_name' => $varName));
