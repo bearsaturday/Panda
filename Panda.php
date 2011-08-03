@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.36';
+    const VERSION =  '0.3.37';
 
     /**
      * Package name - App
