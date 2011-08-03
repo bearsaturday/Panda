@@ -290,20 +290,20 @@ class Panda
      * @var array
      */
     private static $_config = array(
-        self::CONFIG_DEBUG => false,
-        self::CONFIG_VALID_PATH => array('/'),
-        self::CONFIG_LOG_PATH => '/tmp',
-        self::CONFIG_ON_ERROR_FIRED => false,
-        self::CONFIG_ON_FATAL_ERROR => 'Panda/template/fatal.html',
-        self::CONFIG_ON_IS_CLI_OUTPUT => false,
-        self::CONFIG_ENABLE_FIREPHP => true,
-        self::CONFIG_FATAL_HTML => 'Panda/template/fatal.html',
-        self::CONFIG_HTTP_TPL => 'Panda/template/http.php',
-        self::CONFIG_CATCH_FATAL => false,
-        self::CONFIG_CATCH_STRICT => true,
-        self::CONFIG_PANDA_PATH => '/',
-        self::CONFIG_EDITOR => 0,
-        self::CONFIG_GROWL => false,
+    self::CONFIG_DEBUG => false,
+    self::CONFIG_VALID_PATH => array('/'),
+    self::CONFIG_LOG_PATH => '/tmp',
+    self::CONFIG_ON_ERROR_FIRED => false,
+    self::CONFIG_ON_FATAL_ERROR => 'Panda/template/fatal.html',
+    self::CONFIG_ON_IS_CLI_OUTPUT => false,
+    self::CONFIG_ENABLE_FIREPHP => true,
+    self::CONFIG_FATAL_HTML => 'Panda/template/fatal.html',
+    self::CONFIG_HTTP_TPL => 'Panda/template/http.php',
+    self::CONFIG_CATCH_FATAL => false,
+    self::CONFIG_CATCH_STRICT => true,
+    self::CONFIG_PANDA_PATH => '/',
+    self::CONFIG_EDITOR => 0,
+    self::CONFIG_GROWL => false,
     );
 
     /**
@@ -486,6 +486,12 @@ class Panda
      */
     public static function onDebugPhpError($code, $message, $file, $line, array $errcontext)
     {
+        $type = self::$phpError[$code];
+        $simpleErrorString =  "[{$type}] {$message} in {$file} on line {$line}";
+        if ($code !== E_STRICT) {
+            // apache log all error expect E_STRICT even @ symbol
+            error_log($simpleErrorString, 0);
+        }
         // @?
         if (error_reporting() === 0) {
             return;
@@ -497,9 +503,7 @@ class Panda
 
         static $_cnt = 0;
 
-        $type = self::$phpError[$code];
-        $simpleErrorString =  "[{$type}] {$message} in {$file} on line {$line}";
-        // me ?
+        // me ?        // me ?
         if ($file === __FILE__) {
             $msg = "<b>Error in Panda ! PHP Error [$simpleErrorString] captured in [" . __FILE__ ." on line ". __LINE__;
             throw new Exception($msg);
@@ -510,7 +514,9 @@ class Panda
         // valid path ?
         if (self::isValidPath($file) !== true) {
             self::$_outerPathErrors[$code] = $simpleErrorString;
-            return;
+            if ($code & E_NOTICE || $code & E_STRICT) {
+                return;
+            }
         }
         self::$_errorStat |= $code;
         $errorString = self::$phpError[$code];
@@ -763,7 +769,7 @@ class Panda
                     break;
                 default :
                     $fireLevel = FirePHP::ERROR;
-                    break;
+                break;
             }
             FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
         }
