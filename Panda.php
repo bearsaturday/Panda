@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.35';
+    const VERSION =  '0.3.36';
 
     /**
      * Package name - App
@@ -294,11 +294,11 @@ class Panda
         self::CONFIG_VALID_PATH => array('/'),
         self::CONFIG_LOG_PATH => '/tmp',
         self::CONFIG_ON_ERROR_FIRED => false,
-        self::CONFIG_ON_FATAL_ERROR => 'Panda/Template/fatal.html',
+        self::CONFIG_ON_FATAL_ERROR => 'Panda/template/fatal.html',
         self::CONFIG_ON_IS_CLI_OUTPUT => false,
         self::CONFIG_ENABLE_FIREPHP => true,
-        self::CONFIG_FATAL_HTML => 'Panda/Template/fatal.html',
-        self::CONFIG_HTTP_TPL => 'Panda/Template/http.php',
+        self::CONFIG_FATAL_HTML => 'Panda/template/fatal.html',
+        self::CONFIG_HTTP_TPL => 'Panda/template/http.php',
         self::CONFIG_CATCH_FATAL => false,
         self::CONFIG_CATCH_STRICT => true,
         self::CONFIG_PANDA_PATH => '/',
