@@ -16,7 +16,7 @@
 	<!--    <script src="/__panda/js/ace/keybinding-vim.js" type="text/javascript" charset="utf-8"></script>-->
 </head>
 <body>
-    <div id="lavel" class="editor_label"><span class="editor_file"><?php echo $view['file_path']?></span><span class="editor_file_save">SAVE</span></div>
+    <div id="lavel" class="editor_label"><span class="editor_file"><?php echo $view['file_path']?></span><span class="editor_file_save" id="save_now">SAVE</span></div>
     <pre id="editor"><?php echo htmlspecialchars($view['file_contents']); ?></pre>
     <script>
     $(function(){
@@ -26,9 +26,12 @@
         editor.gotoLine(<?php echo $view['line'];?>);
         editor.setReadOnly(<?php echo ($view['is_writable'] ? 'false' : 'true');?>);
         <?php echo ($view['is_writable']) ? "$.pandaEdit.label('reset');" : "$.pandaEdit.label('readonly');"; ?>
+        var save = function() {$.pandaEdit.save("<?php echo $view['file_path'] ?>", editor.getSession().getValue());};
         $('#editor').keybind('keyup', {
-        	  'C-s': function() {$.pandaEdit.save("<?php echo $view['file_path'] ?>", editor.getSession().getValue());
-     	}});
+        	  'C-s': save,
+        	  'C-S-s': save
+     	});
+     	$('#save_now').click(save);
     });
     </script>
 </body>
