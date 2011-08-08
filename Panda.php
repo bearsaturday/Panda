@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.37';
+    const VERSION =  '0.3.38';
 
     /**
      * Package name - App
@@ -283,6 +283,13 @@ class Panda
      * @var array
      */
     private static $_outerPathErrors = array();
+
+    /**
+     * Errors in all path
+     *
+     * @var array
+     */
+    private static $_errors = array();
 
     /**
      * Default configration
@@ -511,14 +518,15 @@ class Panda
         if($_cnt++ > 100) {
             return;
         }
+        self::$_errorStat |= $code;
         // valid path ?
         if (self::isValidPath($file) !== true) {
             self::$_outerPathErrors[$code] = $simpleErrorString;
-            if ($code & E_NOTICE || $code & E_STRICT) {
+            self::$_errors[$code] = $simpleErrorString;
+            if ($code & E_NOTICE || $code & E_STRICT || $code & E_WARNING) {
                 return;
             }
         }
-        self::$_errorStat |= $code;
         $errorString = self::$phpError[$code];
 
         // igore repeated error (same as ignore_repeated_errors 0)
@@ -1292,5 +1300,10 @@ EOD;
     public static function getOuterPathErrors()
     {
         return self::$_outerPathErrors;
+    }
+
+    public static function getAllErrors()
+    {
+        return self::$_errors;
     }
 }
