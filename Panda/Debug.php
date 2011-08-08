@@ -119,12 +119,6 @@ class Panda_Debug
         $file = $trace[0]['file'];
         $line = $trace[0]['line'];
         $includePath = explode(":", get_include_path());
-        // remove if include_path exists
-        foreach ($includePath as $var) {
-            if ($var != '.') {
-                $file = str_replace("{$var}/", '', $file);
-            }
-        }
         $method = (isset($trace[1]['class'])) ? " ({$trace[1]['class']}" . '::' . "{$trace[1]['function']})" : '';
         $fileArray = file($file, FILE_USE_INCLUDE_PATH);
         $p = trim($fileArray[$line - 1]);
