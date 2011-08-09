@@ -37,7 +37,7 @@ $.pandaEdit = {
 		$.pandaEdit.changed = false;
 	},
 	label : function(mode) {
-		var label = 'div#lavel.editor_label span.editor_file_save';
+		var label = 'div#label.editor_label span.editor_file_save';
 		if (mode == 'reset') {
 			// reset
 			jQuery(label).html('SAVE').css('background-color', 'gray');

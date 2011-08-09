@@ -16,7 +16,7 @@
 	<!--    <script src="/__panda/js/ace/keybinding-vim.js" type="text/javascript" charset="utf-8"></script>-->
 </head>
 <body>
-    <div id="lavel" class="editor_label"><span class="editor_file"><?php echo $view['file_path']?></span><span class="editor_file_save" id="save_now">SAVE</span></div>
+    <div id="label" class="editor_label"><span class="editor_file"><?php echo $view['file_path']?></span><span class="editor_file_save" id="save_now">SAVE</span></div>
     <pre id="editor"><?php echo htmlspecialchars($view['file_contents']); ?></pre>
     <script>
     $(function(){

@@ -136,13 +136,6 @@ class Panda
     const CONFIG_ON_FATAL_ERROR = 'on_fatal_error';
 
     /**
-     * config エラーをCLIモードで出力するために判断するコールバック
-     *
-     * @var string
-     */
-    const CONFIG_ON_IS_CLI_OUTPUT = 'on_is_cli_output';
-
-    /**
      * config - use firephp ?
      *
      * @var string
@@ -297,20 +290,19 @@ class Panda
      * @var array
      */
     private static $_config = array(
-    self::CONFIG_DEBUG => false,
-    self::CONFIG_VALID_PATH => array('/'),
-    self::CONFIG_LOG_PATH => '/tmp',
-    self::CONFIG_ON_ERROR_FIRED => false,
-    self::CONFIG_ON_FATAL_ERROR => 'Panda/template/fatal.html',
-    self::CONFIG_ON_IS_CLI_OUTPUT => false,
-    self::CONFIG_ENABLE_FIREPHP => true,
-    self::CONFIG_FATAL_HTML => 'Panda/template/fatal.html',
-    self::CONFIG_HTTP_TPL => 'Panda/template/http.php',
-    self::CONFIG_CATCH_FATAL => false,
-    self::CONFIG_CATCH_STRICT => true,
-    self::CONFIG_PANDA_PATH => '/',
-    self::CONFIG_EDITOR => 0,
-    self::CONFIG_GROWL => false,
+        self::CONFIG_DEBUG => false,
+        self::CONFIG_VALID_PATH => array('/'),
+        self::CONFIG_LOG_PATH => '/tmp',
+        self::CONFIG_ON_ERROR_FIRED => false,
+        self::CONFIG_ON_FATAL_ERROR => false,
+        self::CONFIG_ENABLE_FIREPHP => true,
+        self::CONFIG_FATAL_HTML => 'Panda/template/fatal.php',
+        self::CONFIG_HTTP_TPL => 'Panda/template/http.php',
+        self::CONFIG_CATCH_FATAL => false,
+        self::CONFIG_CATCH_STRICT => true,
+        self::CONFIG_PANDA_PATH => '/',
+        self::CONFIG_EDITOR => 0,
+        self::CONFIG_GROWL => false,
     );
 
     /**
@@ -712,10 +704,6 @@ class Panda
     public static function isCliOutput()
     {
         return (PHP_SAPI === 'cli');
-        $config = self::$_config[self::CONFIG_ON_IS_CLI_OUTPUT];
-        $config = (is_callable($config, false)) ? call_user_func($config) : (is_bool($config) ? $config : false);
-        $result = ((PHP_SAPI === 'cli') || $config);
-        return $result;
     }
 
     /**
@@ -1061,62 +1049,38 @@ EOD;
      */
     public static function onFatalError($buffer)
     {
-        if (strpos($buffer, 'Fatal error:') === false) {
+        $error = error_get_last();
+       // return "FATAL" . $buffer . "FATAL" . var_export($error, true);
+        if($error['type'] !== 1){
             return $buffer;
         }
-        $output = '';
-        $matches = array();
-        preg_match('/Fatal error: (.*)( in )(.*)( on line )(\d+)/', $buffer, $matches);
-        $error = array('all' => $matches[0],
-            'message' => $matches[1],
-            'file' => $matches[3],
-            'line' => $matches[5]);
-        // this file ??
-        if ($matches[3] === __FILE__) {
-            return $error['all'];
-        }
-        // CLI ? doens't work
-        //        if (is_callable(self::isCliOutput()) && self::isCliOutput()) {
-        //            return $buffer;
-        //        }
-        $id = substr(md5($matches[0]), 0, 8);
         // Web
         header("HTTP/1.x 503 Service Temporarily Unavailable.");
-        // Error
+        $id = substr(md5(serialize($error)), 0, 6);
+        // FB
         if (self::$_config[self::CONFIG_DEBUG] === true && self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
             FB::error("Fatal Error - {$error['message']} - ref# {$id}");
-        }
-        if (is_callable(self::$_config[self::CONFIG_ON_FATAL_ERROR])) {
-            $output .= call_user_func(self::$_config[self::CONFIG_ON_FATAL_ERROR], $error);
-            if (is_string($output)) {
-                return $output;
-            }
         }
         // write fatal error in file
         if (self::$_config[self::CONFIG_LOG_PATH]) {
             $path = self::$_config[self::CONFIG_LOG_PATH];
-            error_log("{$matches[0]} fatal-{$id}");
+            $msg = "{$error['message']} in {$error['line']} on {$error['line']}";
+            error_log("[PHP Fatal][{$id}]:{$msg}");
             if (!is_writable($path)) {
                 trigger_error('File write error' . $path　, E_USER_ERROR);
             }
-            if (!file_exists($path)) {
-                file_put_contents($path　. '/fatal-' . $id . '.log', $buffer);
+            $file = $path . 'fatal-' . $id . '.log';
+            if (!file_exists($file)) {
+                file_put_contents($file, $buffer);
+            } else {
             }
         }
         // show Fatal error page
-        $output .= file_get_contents(self::$_config[self::CONFIG_FATAL_HTML], FILE_USE_INCLUDE_PATH);
-        $output = str_replace('{$id}', $id, $output);
-        if (self::$_config[self::CONFIG_DEBUG] === true) {
-            $options = $error;
-            $options['return'] = true;
-            $debugMsg = self::error('Fatal Error', $error['message'], null, $options);
-            $output .= $debugMsg;
+        $fatalHtml = include self::$_config[self::CONFIG_FATAL_HTML];
+        if (is_string($fatalHtml)) {
+            return $fatalHtml;
         }
-        // retry without Panda
-        // ob buffer is not output if Fatal error occured.
-        $conncetor = (strpos($_SERVER['REQUEST_URI'], '?') !== false) ? '&' : '?';
-        $output .= '<ul><li><a href=' . $_SERVER['REQUEST_URI'] . $conncetor . 'nopanda' . '>Retry with no Panda</a></li></ul>';
-        return $output;
+        return $buffer;
     }
 
     /**

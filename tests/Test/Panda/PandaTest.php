@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../../Panda.php';
+require_once 'Panda.php';
 
 /**
  * Test class for Panda.
