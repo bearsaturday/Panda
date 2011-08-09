@@ -1,3 +1,5 @@
+<?php
+$html = <<<EOD
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
@@ -25,3 +27,5 @@
 <hr size=2 color="orange">
 </body>
 </html>
+EOD;
+return $html;

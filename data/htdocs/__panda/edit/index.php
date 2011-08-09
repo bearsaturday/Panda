@@ -3,7 +3,6 @@ require 'Panda.php';
 
 $file = isset($_GET['file']) ?  $_GET['file'] : false;
 $line = isset($_GET['line']) ? $_GET['line'] : 0;
-$lan = isset($_GET['lan']) ? $_GET['lan'] : htmlspecialchars(array_pop(explode('.', $file)));
 if (!is_readable($file)) {
     Panda::message('404 Not found', "[{$file}] is not readable.");
     exit();
