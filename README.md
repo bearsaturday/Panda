@@ -9,7 +9,7 @@ Panda is a PHP error handler.
 Requirements
 ------------
 
-BEAR(Saturday) is only supported on PHP 5.2 and up.
+Panda is only supported on PHP 5.2 and up.
 
 Install Panda
 -------------
