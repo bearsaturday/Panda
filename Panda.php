@@ -60,7 +60,7 @@ class Panda
     /**
      * Version
      */
-    const VERSION =  '0.3.39';
+    const VERSION =  '0.3.40';
 
     /**
      * Package name - App
@@ -226,6 +226,13 @@ class Panda
     const CONFIG_EDITOR = 'edit';
 
     /**
+     * API check
+     *
+     * @var
+     */
+    const CONFIG_IS_API_CHECK = 'is_api';
+
+    /**
      * Editor - Textmate
      *
      * @var int
@@ -303,6 +310,7 @@ class Panda
         self::CONFIG_PANDA_PATH => '/',
         self::CONFIG_EDITOR => 0,
         self::CONFIG_GROWL => false,
+        self::CONFIG_IS_API_CHECK => array(__CLASS__, 'isCliOutput')
     );
 
     /**
@@ -787,7 +795,7 @@ class Panda
             file_put_contents($traceFile, serialize($options['trace']));
             file_put_contents("{$traceFile}.ref.log", serialize($refData));
         }
-        if (PHP_SAPI == 'cli' || self::isCliOutput()) {
+        if (PHP_SAPI == 'cli' || call_user_func(self::$_config[self::CONFIG_IS_API_CHECK])) {
             $output .= $heading . PHP_EOL;
             $output .= $subheading . PHP_EOL;
             $output .= $info . PHP_EOL;
@@ -1183,7 +1191,7 @@ EOD;
         if (!$withBody) {
             return;
         }
-        if (!$serverProtocol || self::isCliOutput()) {
+        if (!$serverProtocol || call_user_func(self::$_config[self::CONFIG_IS_API_CHECK])) {
             echo "{$code} {$codeMsg}" . PHP_EOL . PHP_EOL;
         } else {
             $error = array('color' => '#FF8C00',
@@ -1253,7 +1261,7 @@ EOD;
         if ($var) {
             return $var;
         }
-        $tempfile = tempnam(uniqid(rand(), TRUE), '');
+        $tempfile = tempnam(uniqid(rand(), true), '');
         if (file_exists($tempfile)) {
             unlink($tempfile);
             return realpath(dirname($tempfile));

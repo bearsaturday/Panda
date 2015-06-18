@@ -11,13 +11,14 @@
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: $Id$
  */
-error_reporting(E_ERROR);
+error_reporting(0);
+require_once __DIR__ . '/PEAR/PackageFileManager2.php';
 require_once 'PEAR.php';
 require_once 'PEAR/PackageFileManager2.php';
 require '../../Panda.php';
 error_reporting(E_ERROR);
 $config['package'] = 'Panda';
-$config['channel'] = 'pear.bear-project.net';
+$config['channel'] = 'bearsaturday.github.io/pear';
 $config['release_ver'] = Panda::VERSION;
 $config['api_ver'] = $config['release_ver'];
 $config['stability'] = 'beta';
