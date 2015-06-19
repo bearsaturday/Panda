@@ -1075,7 +1075,7 @@ EOD;
             $msg = "{$error['message']} in {$error['line']} on {$error['line']}";
             error_log("[PHP Fatal][{$id}]:{$msg}");
             if (!is_writable($path)) {
-                trigger_error('File write error' . $path　, E_USER_ERROR);
+                trigger_error('File write error' . $path, E_USER_ERROR);
             }
             $file = $path . 'fatal-' . $id . '.log';
             if (!file_exists($file)) {
