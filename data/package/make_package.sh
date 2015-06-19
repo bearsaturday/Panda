@@ -3,7 +3,7 @@
 cd ../../
 rm package.xml
 rm package.log
-rm BEAR-*.tgz
+rm Panda-*.tgz
 cd data/package
 echo 'make package.xml...'
 php make.php make > /dev/null
