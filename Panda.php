@@ -796,18 +796,13 @@ class Panda
             file_put_contents("{$traceFile}.ref.log", serialize($refData));
         }
         if (PHP_SAPI == 'cli' || call_user_func(self::$_config[self::CONFIG_IS_API_CHECK])) {
+            $info = self::_getStringInfo($info);
             $output .= $heading . PHP_EOL;
             $output .= $subheading . PHP_EOL;
             $output .= $info . PHP_EOL;
             return $output;
         } else {
-            if (is_array($info) || is_object($info)) {
-                if (isset($options['package']) && ($options['package'] === self::PACKAGE_PHP)) {
-                    $info = self::_getContextString($info, '$');
-                } else {
-                    $info = self::_getContextString($info);
-                }
-            }
+            $info = self::_getHtmlInfo($info, $options);
             header('Content-Type: text/html; charset=utf-8');
             $output .= '<div id="panda-' . $num . '"class="panda">';
             $output .= '<div class="panda-header">';
@@ -916,6 +911,26 @@ class Panda
             }
         }
         return $result;
+    }
+
+    private static function _getStringInfo($info)
+    {
+        if (is_array($info) || is_object($info)) {
+            $info = implode("\n", $info);
+        }
+        return $info;
+    }
+
+    private static function _getHtmlInfo($info, $options)
+    {
+        if (is_array($info) || is_object($info)) {
+            if (isset($options['package']) && ($options['package'] === self::PACKAGE_PHP)) {
+                $info = self::_getContextString($info, '$');
+            } else {
+                $info = self::_getContextString($info);
+            }
+        }
+        return $info;
     }
 
     /**
