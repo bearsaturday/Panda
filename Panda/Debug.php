@@ -118,7 +118,6 @@ class Panda_Debug
         $trace = isset($options['trace']) ? $options['trace'] : debug_backtrace();
         $file = $trace[0]['file'];
         $line = $trace[0]['line'];
-        $includePath = explode(":", get_include_path());
         $method = (isset($trace[1]['class'])) ? " ({$trace[1]['class']}" . '::' . "{$trace[1]['function']})" : '';
         $fileArray = file($file, FILE_USE_INCLUDE_PATH);
         $p = trim($fileArray[$line - 1]);
@@ -155,9 +154,11 @@ class Panda_Debug
         case 'v' :
         case 'var' :
             if (class_exists('Var_Dump', false)) {
+                /** @noinspection PhpDynamicAsStaticMethodCallInspection */
                 Var_Dump::displayInit(array(
                     'display_mode' => 'HTML4_Text'));
                 print $labelField;
+                /** @noinspection PhpDynamicAsStaticMethodCallInspection */
                 Var_Dump::display($values);
             } else {
                 ob_start();
@@ -192,9 +193,12 @@ class Panda_Debug
         case 'fire' :
             if (class_exists('FB', false)) {
                 $label = isset($options['label']) ? $options['label'] : 'p() in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'];
-                FB::group($label);
-                FB::error($values);
-                FB::groupEnd();
+                /** @noinspection PhpUndefinedClassInspection */
+                {
+                    FB::group($label);
+                    FB::error($values);
+                    FB::groupEnd();
+                }
             }
             break;
         case null :
@@ -205,6 +209,7 @@ class Panda_Debug
             print_a($values, $options);
         }
         if (isset($options['return']) && $options['return'] === true) {
+            /** @noinspection PhpInconsistentReturnPointsInspection */
             return ob_get_clean();
         }
     }
@@ -221,17 +226,18 @@ class Panda_Debug
      * </code>
      *
      * @param string $target      target
-     * @param boll   $cehckParent check parent class
+     * @param bool   $checkParent check parent class
      *
      * @return void
      */
-    public static function reflect($target, $cehckParent = false)
+    public static function reflect($target, $checkParent = false)
     {
         if (is_object($target)) {
+            /** @noinspection PhpParamsInspection */
             $target = get_class($target);
         }
         switch (true) {
-        case function_exists($target) :
+        case is_string($target) && function_exists($target) :
             $ref = new ReflectionFunction($target);
             $info['name'] = $ref->isInternal() ? 'The internal ' : 'The user-defined ';
             $info['name'] .= $targetName = $ref->getName();
@@ -243,7 +249,7 @@ class Panda_Debug
             }
             $type = 'function';
             break;
-        case class_exists($target, false) :
+        case is_string($target) && class_exists($target, false) :
             $ref = new ReflectionClass($target);
             $type = 'class';
             $info['name'] = $ref->isInternal() ? 'The internal ' : 'The user-defined ';
@@ -264,6 +270,7 @@ class Panda_Debug
                 }
             }
 //            $info['Public Properties'] = $porps;
+            $methods = array();
             foreach ($ref->getMethods() as $method) {
                 $methodRef = new ReflectionMethod($targetName, $method->name);
 
@@ -278,7 +285,7 @@ class Panda_Debug
             if ($ref->isInstantiable() && is_object($target)) {
                 $info['isInstance ?'] = $ref->isInstance($target) ? 'yes' : 'no';
             }
-            if ($parent) {
+            if ($checkParent) {
                 $info['parent'] .= $ref->getParentClass();
             }
             break;
@@ -298,8 +305,8 @@ class Panda_Debug
      * Panda_Debug::trace();
      * </code>
      *
-     * @param string $return         return string if true
-     * @param array  $debugBackTrace array:trace data false:trace from here
+     * @param bool $return         return string if true
+     * @param mixed  $debugBackTrace array:trace data false:trace from here
      *
      * @return void
      */
@@ -324,6 +331,7 @@ class Panda_Debug
         $link = '<a href="/__panda/trace/?id=' . $id . '" title="' . $name . '" target="_panda_trace_' . $id . '" style="';
         $link .= $style . '">trace</a>';
         if ($return === true) {
+            /** @noinspection PhpInconsistentReturnPointsInspection */
             return $link;
         }
         echo $link;
@@ -336,18 +344,18 @@ class Panda_Debug
      * echo getTraceSummary(debug_backtrace()); //output trace summary
      * </code>
      *
-     * @param array $debuBackTrace trace data
+     * @param array $debugBackTrace trace data
      *
-     * @return void
+     * @return string
      */
-    public static function getTraceSummary($debuBackTrace = null)
+    public static function getTraceSummary($debugBackTrace = null)
     {
-        $debuBackTrace = is_null($debuBackTrace) ? debug_backtrace() : $debuBackTrace;
-        $traceLevels = array_keys($debuBackTrace);
+        $debugBackTrace = is_null($debugBackTrace) ? debug_backtrace() : $debugBackTrace;
+        $traceLevels = array_keys($debugBackTrace);
         $i = 0;
         $traceSummary = '';
         foreach ($traceLevels as $level) {
-            $trace = $debuBackTrace[$level];
+            $trace = $debugBackTrace[$level];
             if (isset($trace['file'])) {
                 $file = $trace['file'];
                 $line = $trace['line'];
@@ -384,6 +392,7 @@ class Panda_Debug
                     }
                 }
             }
+            $args = implode(',', $args);
             if (isset($trace['class'])) {
                 $hitInfo = "{$trace['class']}{$trace['type']}{$trace['function']}({$args}) ";
             } elseif (isset($trace['function'])) {
@@ -391,7 +400,7 @@ class Panda_Debug
             } else {
                 $hitInfo = '';
             }
-            $args = implode(',', $args);
+            $line = isset($line) ? $line : 0;
             $traceSummary .= '<li><span class="timeline-num">' . $i . '</span>';
             $traceSummary .= '<span class="timeline-body">' . $hitLine . '</span>';
             $traceSummary .= '<span class="timeline-info">' . $hitInfo . '<br />';
@@ -408,7 +417,7 @@ class Panda_Debug
      *
      * @param mixed  $var     variables
      * @param string $varName variable name
-     * @param bool   $pInfo
+     * @param array  $pInfo
      *
      * @return string
      *
@@ -441,7 +450,7 @@ class Panda_Debug
             $pre .= "<span style='color: #660000;'>" . htmlspecialchars($pInfo['var_name']) . "</span>";
             $post = '&nbsp;&nbsp;' . $pInfo['label'];
         }
-       if ($varName !== FALSE) {
+        if ($varName !== FALSE) {
             $result = $pre . self::_doDump($var) . $post . '</pre>';
         } else {
             $result = $pre . $post . "</pre>";
@@ -451,6 +460,13 @@ class Panda_Debug
 
     /**
      * Var Dump - Sub
+     *
+     * @param $var
+     * @param null $var_name
+     * @param null $indent
+     * @param null $reference
+     *
+     * @return string
      *
      * @author php at mikeboers dot com
      * @author Akihito Koriyama
@@ -488,7 +504,6 @@ class Panda_Debug
                 $type_color = "<span style='color:black'>";
 
             if (is_array($avar)) {
-                $count = count($avar);
                 $result .= "$indent" . ($var_name ? "$var_name => " : " = ") . "<span style='color:black'>$type</span><br>$indent(<br>";
                 $keys = array_keys($avar);
                 foreach ($keys as $name) {
