@@ -916,7 +916,7 @@ class Panda
     private static function _getStringInfo($info)
     {
         if (is_array($info) || is_object($info)) {
-            $info = implode("\n", $info);
+            $info = var_export($info, true);
         }
         return $info;
     }
