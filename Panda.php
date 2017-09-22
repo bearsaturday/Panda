@@ -491,7 +491,7 @@ class Panda
      *
      * @return object
      */
-    public static function onDebugPhpError($code, $message, $file, $line, array $errcontext)
+    public static function onDebugPhpError($code, $message, $file, $line, $errcontext)
     {
         $type = self::$phpError[$code];
         $simpleErrorString =  "[{$type}] {$message} in {$file} on line {$line}";
