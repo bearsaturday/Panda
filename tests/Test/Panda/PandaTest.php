@@ -111,9 +111,11 @@ class PandaTest extends PHPUnit_Framework_TestCase
      */
     public function testOnPearError()
     {
-        $last_handler = set_exception_handler(null);
-        $this->assertSame('Panda', $last_handler[0]);
-        $this->assertSame('onException', $last_handler[1]);
+        if (version_compare(PHP_VERSION, '5.5', '>=')) {
+            $last_handler = set_exception_handler(null);
+            $this->assertSame('Panda', $last_handler[0]);
+            $this->assertSame('onException', $last_handler[1]);
+        }
     }
 
     /**
