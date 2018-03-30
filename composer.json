@@ -1,7 +1,7 @@
 {
   "name": "bearsaturday/panda",
   "descriptions": "Panda is a PHP error handler.",
-  "license": "BSD",
+  "license": "BSD-3-Closure",
   "authors": [
     {
       "name": "Akihito Koriyama",
