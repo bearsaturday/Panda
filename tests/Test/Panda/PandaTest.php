@@ -26,7 +26,6 @@ class PandaTest extends PHPUnit_Framework_TestCase
         Panda::CONFIG_LOG_PATH => '/tmp',
         Panda::CONFIG_ON_ERROR_FIRED => false,
         Panda::CONFIG_ON_FATAL_ERROR => 'Panda/template/fatal.html',
-        Panda::CONFIG_ON_IS_CLI_OUTPUT => false,
         Panda::CONFIG_ENABLE_FIREPHP => true,
         Panda::CONFIG_FATAL_HTML => 'Panda/template/fatal.html',
         Panda::CONFIG_HTTP_TPL => 'Panda/template/http.php',
@@ -54,6 +53,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testInit().
      */
     public function testInit()
@@ -66,6 +66,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testRestoreHandler().
      */
     public function testRestoreHandler()
@@ -77,6 +78,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnAssert().
      */
     public function testOnAssert()
@@ -84,7 +86,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
         //        $config = Panda::getConfig();
         //        $config[Panda::CONFIG_DEBUG] = true;
         //        Panda::init($config);
-        assert(false);
+        //assert(false);
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
@@ -92,6 +94,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnStackError().
      */
     public function testOnStackError()
@@ -103,22 +106,18 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnPearError().
      */
     public function testOnPearError()
     {
-        $isPandaError = false;
-        try {
-            PHPUnit_Framework_Error_Notice::$enabled = false;
-            @PEAR::raiseError('PEAR error');
-        } catch (Exception $e) {
-            $isPandaError = $e instanceof Panda_Exception;
-        }
-        PHPUnit_Framework_Error_Notice::$enabled = true;
-        $this->assertTrue($isPandaError);
+        $last_handler = set_exception_handler(null);
+        $this->assertSame('Panda', $last_handler[0]);
+        $this->assertSame('onException', $last_handler[1]);
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnDebugPhpError().
      */
     public function testOnDebugPhpError()
@@ -130,6 +129,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnLivePhpError().
      */
     public function testOnLivePhpError()
@@ -141,6 +141,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnException().
      */
     public function testOnException()
@@ -152,6 +153,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testIsValidPath().
      */
     public function testIsValidPath()
@@ -163,6 +165,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testIsCliOutput().
      */
     public function testIsCliOutput()
@@ -174,6 +177,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testError().
      */
     public function testError()
@@ -185,6 +189,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testMessage().
      */
     public function testMessage()
@@ -196,6 +201,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement test_getFileSummary().
      */
     public function test_getFileSummary()
@@ -207,6 +213,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testGetEditorLink().
      */
     public function testGetEditorLink()
@@ -218,6 +225,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnFatalError().
      */
     public function testOnFatalError()
@@ -229,6 +237,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOnStrictError().
      */
     public function testOnStrictError()
@@ -240,6 +249,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testOutputHttpStatus().
      */
     public function testOutputHttpStatus()
@@ -251,6 +261,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testGetErrorStat().
      */
     public function testGetErrorStat()
@@ -262,6 +273,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testGetTempDir().
      */
     public function testGetTempDir()
@@ -273,6 +285,7 @@ class PandaTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @todo Implement testGetOuterPathErrors().
      */
     public function testGetOuterPathErrors()

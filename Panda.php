@@ -346,7 +346,7 @@ class Panda
                 syslog(LOG_INFO, print_r($v, true));
             }
             if (class_exists('PEAR', false)) {
-                PEAR::setErrorHandling(PEAR_Exception);
+                PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, array('Panda', 'onPearError'));
             }
             set_exception_handler(array('Panda', 'onException'));
         } else {
