@@ -378,14 +378,9 @@ else:
 
         public static function _handle_whitespace( $string ) {
             // replace 2 or more spaces with nobreaks (for special markup)
-            $string = preg_replace_callback(
-                '/ {2,}/',
-                create_function(
-                    '$matches',
-                    'return str_repeat("&nbsp;", strlen($matches[0]));'
-                ),
-                $string
-            );
+            $string = preg_replace_callback('/ {2,}/', function($matches) {
+                return str_repeat("&nbsp;", strlen($matches[0]));
+            }, $string);
 
             $string = preg_replace(array('/&nbsp;$/', '/^&nbsp;/'), '<span class="DbugL_outer_space">&nbsp;</span>', $string); # mark spaces at the start/end of the string with red underscores
             $string = str_replace("\t", '&nbsp;&nbsp;<span class="DbugL_tabs">&nbsp;</span>', $string); # replace tabulators with '  »'
