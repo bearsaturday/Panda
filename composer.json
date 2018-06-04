@@ -23,7 +23,8 @@
     "doctrine/instantiator": "~1.0.5"
   },
   "autoload": {
-    "files": ["/Panda.php", "/Panda/"]
+    "classmap": ["Panda"],
+    "files": ["./Panda.php"]
   },
   "include-path": [
     "./"
