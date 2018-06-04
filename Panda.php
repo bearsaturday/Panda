@@ -469,7 +469,7 @@ class Panda
         $userInfo = $error->getUserInfo();
         $trace = ($error->getBackTrace());
         $info = array('Error Type' => $error->getType(),
-            'Debug Info' => $error->getUserInfo());
+            'Debug Info' => '');  //$error->getUserInfo()
         if ($debugInfo !== $userInfo) {
             $info['User Info'] = $userInfo;
         }
@@ -603,8 +603,11 @@ class Panda
      *
      * @return void
      */
-    public static function onException(Exception $e, $httpScreenOutput = true)
+    public static function onException($e, $httpScreenOutput = true)
     {
+        if (! $e instanceof Exception) {
+            throw $e;
+        }
         try {
             $class = get_class($e);
             $body = null;
