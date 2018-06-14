@@ -3,14 +3,13 @@
  * PEAR_PackageFileManager2, like PEAR_PackageFileManager, is designed to
  * create and manipulate package.xml version 2.0.
  *
- * PHP versions 4 and 5
+ * PHP versions 5 and 7
  *
  * @category  PEAR
  * @package   PEAR_PackageFileManager2
  * @author    Greg Beaver <cellog@php.net>
- * @copyright 2005-2009 The PEAR Group
+ * @copyright 2003-2015 The PEAR Group
  * @license   New BSD, Revised
- * @version   CVS: $Id: PackageFileManager2.php 309758 2011-03-28 01:47:53Z dufuz $
  * @link      http://pear.php.net/package/PEAR_PackageFileManager2
  * @since     File available since Release 1.0.0alpha1
  */
@@ -55,61 +54,61 @@ define('PEAR_PACKAGEFILEMANAGER2_PATHTOPKGDIR_NOTREAL',        31);
  * @access private
  */
 $GLOBALS['_PEAR_PACKAGEFILEMANAGER2_ERRORS'] =
-array(
-    'en' =>
     array(
-        PEAR_PACKAGEFILEMANAGER2_NOPKGDIR =>
-            'Package source base directory (option \'packagedirectory\') must be ' .
-            'specified in PEAR_PackageFileManager2 setOptions',
-        PEAR_PACKAGEFILEMANAGER2_PKGDIR_NOTREAL =>
-            'Package source base directory (option \'packagedirectory\') must be ' .
-            'an existing directory (was "%s")',
-        PEAR_PACKAGEFILEMANAGER2_PATHTOPKGDIR_NOTREAL =>
-            'Path to a Package file to read in (option \'pathtopackagefile\') must be ' .
-            'an existing directory (was "%s")',
-        PEAR_PACKAGEFILEMANAGER2_OUTPUTDIR_NOTREAL =>
-            'output directory (option \'outputdirectory\') must be ' .
-            'an existing directory (was "%s")',
-        PEAR_PACKAGEFILEMANAGER2_NOBASEDIR =>
-            'Package install base directory (option \'baseinstalldir\') must be ' .
-            'specified in PEAR_PackageFileManager2 setOptions',
-        PEAR_PACKAGEFILEMANAGER2_GENERATOR_NOTFOUND =>
-            'Base class "%s" can\'t be located',
-        PEAR_PACKAGEFILEMANAGER2_GENERATOR_NOTFOUND_ANYWHERE =>
-            'Base class "%s" can\'t be located in default or user-specified directories',
-        PEAR_PACKAGEFILEMANAGER2_CANTWRITE_PKGFILE =>
-            'Failed to write package.xml file to destination directory',
-        PEAR_PACKAGEFILEMANAGER2_DEST_UNWRITABLE =>
-            'Destination directory "%s" is unwritable',
-        PEAR_PACKAGEFILEMANAGER2_CANTCOPY_PKGFILE =>
-            'Failed to copy package.xml.tmp file to package.xml',
-        PEAR_PACKAGEFILEMANAGER2_CANTOPEN_TMPPKGFILE =>
-            'Failed to open temporary file "%s" for writing',
-        PEAR_PACKAGEFILEMANAGER2_PATH_DOESNT_EXIST =>
-            'package.xml file path "%s" doesn\'t exist or isn\'t a directory',
-        PEAR_PACKAGEFILEMANAGER2_DIR_DOESNT_EXIST =>
-            'Package source base directory "%s" doesn\'t exist or isn\'t a directory',
-        PEAR_PACKAGEFILEMANAGER2_RUN_SETOPTIONS =>
-            'Run $managerclass->setOptions() before any other methods',
-        PEAR_PACKAGEFILEMANAGER2_NO_FILES =>
-            'No files found, check the path "%s"',
-        PEAR_PACKAGEFILEMANAGER2_IGNORED_EVERYTHING =>
-            'No files left, check the path "%s" and ignore option "%s"',
-        PEAR_PACKAGEFILEMANAGER2_INVALID_PACKAGE =>
-            'Package validation failed:%s%s',
-        PEAR_PACKAGEFILEMANAGER2_INVALID_REPLACETYPE =>
-            'Replacement Type must be one of "%s", was passed "%s"',
-        PEAR_PACKAGEFILEMANAGER2_INVALID_POSTINSTALLSCRIPT =>
-            'Invalid post-install script task: %s',
-        PEAR_PACKAGEFILEMANAGER2_INVALID_ROLE =>
-            'Invalid file role passed to addRole, must be one of "%s", was passed "%s"',
-        PEAR_PACKAGEFILEMANAGER2_CVS_PACKAGED =>
-            'path "%path%" contains CVS directory',
-        PEAR_PACKAGEFILEMANAGER2_NO_PHPCOMPATINFO =>
-            'pear/PHP_CompatInfo is not installed, cannot detect dependencies',
-       ),
+        'en' =>
+            array(
+                PEAR_PACKAGEFILEMANAGER2_NOPKGDIR =>
+                    'Package source base directory (option \'packagedirectory\') must be ' .
+                    'specified in PEAR_PackageFileManager2 setOptions',
+                PEAR_PACKAGEFILEMANAGER2_PKGDIR_NOTREAL =>
+                    'Package source base directory (option \'packagedirectory\') must be ' .
+                    'an existing directory (was "%s")',
+                PEAR_PACKAGEFILEMANAGER2_PATHTOPKGDIR_NOTREAL =>
+                    'Path to a Package file to read in (option \'pathtopackagefile\') must be ' .
+                    'an existing directory (was "%s")',
+                PEAR_PACKAGEFILEMANAGER2_OUTPUTDIR_NOTREAL =>
+                    'output directory (option \'outputdirectory\') must be ' .
+                    'an existing directory (was "%s")',
+                PEAR_PACKAGEFILEMANAGER2_NOBASEDIR =>
+                    'Package install base directory (option \'baseinstalldir\') must be ' .
+                    'specified in PEAR_PackageFileManager2 setOptions',
+                PEAR_PACKAGEFILEMANAGER2_GENERATOR_NOTFOUND =>
+                    'Base class "%s" can\'t be located',
+                PEAR_PACKAGEFILEMANAGER2_GENERATOR_NOTFOUND_ANYWHERE =>
+                    'Base class "%s" can\'t be located in default or user-specified directories',
+                PEAR_PACKAGEFILEMANAGER2_CANTWRITE_PKGFILE =>
+                    'Failed to write package.xml file to destination directory',
+                PEAR_PACKAGEFILEMANAGER2_DEST_UNWRITABLE =>
+                    'Destination directory "%s" is unwritable',
+                PEAR_PACKAGEFILEMANAGER2_CANTCOPY_PKGFILE =>
+                    'Failed to copy package.xml.tmp file to package.xml',
+                PEAR_PACKAGEFILEMANAGER2_CANTOPEN_TMPPKGFILE =>
+                    'Failed to open temporary file "%s" for writing',
+                PEAR_PACKAGEFILEMANAGER2_PATH_DOESNT_EXIST =>
+                    'package.xml file path "%s" doesn\'t exist or isn\'t a directory',
+                PEAR_PACKAGEFILEMANAGER2_DIR_DOESNT_EXIST =>
+                    'Package source base directory "%s" doesn\'t exist or isn\'t a directory',
+                PEAR_PACKAGEFILEMANAGER2_RUN_SETOPTIONS =>
+                    'Run $managerclass->setOptions() before any other methods',
+                PEAR_PACKAGEFILEMANAGER2_NO_FILES =>
+                    'No files found, check the path "%s"',
+                PEAR_PACKAGEFILEMANAGER2_IGNORED_EVERYTHING =>
+                    'No files left, check the path "%s" and ignore option "%s"',
+                PEAR_PACKAGEFILEMANAGER2_INVALID_PACKAGE =>
+                    'Package validation failed:%s%s',
+                PEAR_PACKAGEFILEMANAGER2_INVALID_REPLACETYPE =>
+                    'Replacement Type must be one of "%s", was passed "%s"',
+                PEAR_PACKAGEFILEMANAGER2_INVALID_POSTINSTALLSCRIPT =>
+                    'Invalid post-install script task: %s',
+                PEAR_PACKAGEFILEMANAGER2_INVALID_ROLE =>
+                    'Invalid file role passed to addRole, must be one of "%s", was passed "%s"',
+                PEAR_PACKAGEFILEMANAGER2_CVS_PACKAGED =>
+                    'path "%path%" contains CVS directory',
+                PEAR_PACKAGEFILEMANAGER2_NO_PHPCOMPATINFO =>
+                    'pear/PHP_CompatInfo is not installed, cannot detect dependencies',
+            ),
         // other language translations go here
-     );
+    );
 /**
  * PEAR_PackageFileManager2, like PEAR_PackageFileManager, is designed to
  * create and manipulate package.xml version 2.0.
@@ -190,9 +189,9 @@ array(
  * @category  PEAR
  * @package   PEAR_PackageFileManager2
  * @author    Greg Beaver <cellog@php.net>
- * @copyright 2005-2009 The PEAR Group
+ * @copyright 2003-2015 The PEAR Group
  * @license   New BSD, Revised
- * @version   Release: 1.0.2
+ * @version   Release: 1.0.4
  * @link      http://pear.php.net/package/PEAR_PackageFileManager2
  * @since     Class available since Release 1.0.0alpha1
  */
@@ -257,64 +256,59 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @since  1.0.0a1
      */
     var $_options = array(
-                      'packagefile'       => 'package.xml',
-                      'filelistgenerator' => 'file',
-                      'license'           => 'New BSD License',
-                      'baseinstalldir'    => '',
-                      'changelogoldtonew' => true,
-                      'roles' =>
-                        array(
-                            'h'    => 'src',
-                            'c'    => 'src',
-                            'cpp'  => 'src',
-                            'in'   => 'src',
-                            'm4'   => 'src',
-                            'w32'  => 'src',
-                            'dll'  => 'ext',
-                            'php'  => 'php',
-                            'html' => 'doc',
-                            '*'    => 'data',
-                             ),
-                      'dir_roles' =>
-                        array(
-                            'docs'     => 'doc',
-                            'examples' => 'doc',
-                            'tests'    => 'test',
-                            'scripts'  => 'script',
-                             ),
-                      'exceptions'        => array(),
-                      'installexceptions' => array(),
-                      'ignore'  => array(),
-                      'include' => false,
-                      'notes'   => '',
-                      'changelognotes'    => false,
-                      'outputdirectory'   => false,
-                      'pathtopackagefile' => false,
-                      'lang' => 'en',
-                      'configure_options'       => array(),
-                      'replacements'            => array(),
-                      'globalreplacements'      => array(),
-                      'globalreplaceexceptions' => array(),
-                      'simpleoutput'      => false,
-                      'addhiddenfiles'    => false,
-                      'cleardependencies' => false,
-                      'clearcontents'     => true,
-                      'clearchangelog'    => false,
-                      );
+        'packagefile'       => 'package.xml',
+        'filelistgenerator' => 'file',
+        'license'           => 'New BSD License',
+        'baseinstalldir'    => '',
+        'changelogoldtonew' => true,
+        'roles' =>
+            array(
+                'h'    => 'src',
+                'c'    => 'src',
+                'cpp'  => 'src',
+                'in'   => 'src',
+                'm4'   => 'src',
+                'w32'  => 'src',
+                'dll'  => 'ext',
+                'php'  => 'php',
+                'html' => 'doc',
+                '*'    => 'data',
+            ),
+        'dir_roles' =>
+            array(
+                'docs'     => 'doc',
+                'examples' => 'doc',
+                'tests'    => 'test',
+                'scripts'  => 'script',
+            ),
+        'exceptions'        => array(),
+        'installexceptions' => array(),
+        'ignore'  => array(),
+        'include' => false,
+        'notes'   => '',
+        'changelognotes'    => false,
+        'outputdirectory'   => false,
+        'pathtopackagefile' => false,
+        'lang' => 'en',
+        'configure_options'       => array(),
+        'replacements'            => array(),
+        'globalreplacements'      => array(),
+        'globalreplaceexceptions' => array(),
+        'simpleoutput'      => false,
+        'addhiddenfiles'    => false,
+        'cleardependencies' => false,
+        'clearcontents'     => true,
+        'clearchangelog'    => false,
+    );
 
     /**
-     * Does nothing, use factory
-     *
-     * The constructor is not used in order to be able to
-     * return a PEAR_Error from setOptions
-     *
      * @see    setOptions()
      * @access public
      * @since  1.0.0a1
      */
-    function PEAR_PackageFileManager2()
+    function __construct()
     {
-        parent::PEAR_PackageFile_v2();
+        parent::__construct();
         $config = &PEAR_Config::singleton();
         $this->setConfig($config);
     }
@@ -509,8 +503,8 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
         }
 
         $options['packagedirectory'] = str_replace(DIRECTORY_SEPARATOR,
-                                                 '/',
-                                                 realpath($options['packagedirectory']));
+            '/',
+            realpath($options['packagedirectory']));
         if ($options['packagedirectory']{strlen($options['packagedirectory']) - 1} != '/') {
             $options['packagedirectory'] .= '/';
         }
@@ -521,8 +515,8 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
                     $options['pathtopackagefile']);
             }
             $options['pathtopackagefile'] = str_replace(DIRECTORY_SEPARATOR,
-                                                     '/',
-                                                     realpath($options['pathtopackagefile']));
+                '/',
+                realpath($options['pathtopackagefile']));
             if ($options['pathtopackagefile']{strlen($options['pathtopackagefile']) - 1} != '/') {
                 $options['pathtopackagefile'] .= '/';
             }
@@ -535,8 +529,8 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
             }
 
             $options['outputdirectory'] = str_replace(DIRECTORY_SEPARATOR,
-                                                     '/',
-                                                     realpath($options['outputdirectory']));
+                '/',
+                realpath($options['outputdirectory']));
             if ($options['outputdirectory']{strlen($options['outputdirectory']) - 1} != '/') {
                 $options['outputdirectory'] .= '/';
             }
@@ -552,12 +546,12 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
         }
 
         $path = ($this->_options['pathtopackagefile'] ?
-                    $this->_options['pathtopackagefile'] : $this->_options['packagedirectory']);
+            $this->_options['pathtopackagefile'] : $this->_options['packagedirectory']);
         $this->_options['filelistgenerator'] =
             ucfirst(strtolower($this->_options['filelistgenerator']));
         if (!$internal) {
             if (PEAR::isError($res = PEAR_PackageFileManager2::_getExistingPackageXML($path,
-                  $this->_options['packagefile'], array('cleardependencies' => true)))) {
+                $this->_options['packagefile'], array('cleardependencies' => true)))) {
                 return $res;
             }
             $this->_oldPackageFile = $res;
@@ -581,8 +575,8 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
             if (is_dir(realpath($this->_options['usergeneratordir']))) {
                 $this->_options['usergeneratordir'] =
                     str_replace(DIRECTORY_SEPARATOR,
-                                '/',
-                                realpath($this->_options['usergeneratordir']));
+                        '/',
+                        realpath($this->_options['usergeneratordir']));
                 if ($this->_options['usergeneratordir']{strlen($this->_options['usergeneratordir']) - 1} != '/') {
                     $this->_options['usergeneratordir'] .= '/';
                 }
@@ -591,7 +585,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
             }
 
             $generator = $this->_options['usergeneratordir'] .
-                             ucfirst(strtolower($this->_options['filelistgenerator'])) . '.php';
+                ucfirst(strtolower($this->_options['filelistgenerator'])) . '.php';
             if (file_exists($generator) && is_readable($generator)) {
                 include_once $generator;
             }
@@ -663,7 +657,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @access public
      * @since  1.0.0a1
      */
-    function &importFromPackageFile1($packagefile, $options = array())
+    public static function &importFromPackageFile1($packagefile, $options = array())
     {
         $z   = &PEAR_Config::singleton();
         $pkg = new PEAR_PackageFile($z);
@@ -691,7 +685,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @access public
      * @since  1.0.0a1
      */
-    function &importOptions($packagefile, $options = array())
+    public static function &importOptions($packagefile, $options = array())
     {
         if (is_a($packagefile, 'PEAR_PackageFile_v1')) {
             $gen = &$packagefile->getDefaultGenerator();
@@ -715,7 +709,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
 
         if (!isset($res)) {
             $res = &PEAR_PackageFileManager2::_getExistingPackageXML(dirname($packagefile) .
-                    DIRECTORY_SEPARATOR, basename($packagefile), $options);
+                DIRECTORY_SEPARATOR, basename($packagefile), $options);
             if (PEAR::isError($res)) {
                 return $res;
             }
@@ -1071,7 +1065,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
         }
 
         $outputdir = ($this->_options['outputdirectory'] ?
-                        $this->_options['outputdirectory'] : $this->_options['packagedirectory']);
+            $this->_options['outputdirectory'] : $this->_options['packagedirectory']);
         $this->setPackagefile($this->_options['packagedirectory'] . $this->_options['packagefile']);
         if (!$this->validate($state)) {
             $errors = $this->getValidationWarnings();
@@ -1123,7 +1117,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
             }
 
             return $this->raiseError(PEAR_PACKAGEFILEMANAGER2_CANTOPEN_TMPPKGFILE,
-                    $outputdir . $this->_options['packagefile'] . '.tmp');
+                $outputdir . $this->_options['packagefile'] . '.tmp');
         }
 
         return $this->raiseError(PEAR_PACKAGEFILEMANAGER2_DEST_UNWRITABLE, $outputdir);
@@ -1161,7 +1155,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
     function pushWarning($code, $info)
     {
         $this->_warningStack[] = array('code' => $code,
-                                       'message' => $this->_getMessage($code, $info));
+            'message' => $this->_getMessage($code, $info));
     }
 
     /**
@@ -1207,15 +1201,14 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @param string  $i2   (optional) additional specific error info #2
      *
      * @return PEAR_Error
-     * @static
      * @access public
      * @since  1.0.0a1
      */
     function raiseError($code, $i1 = '', $i2 = '')
     {
         return PEAR::raiseError('PEAR_PackageFileManager2 Error: ' .
-                    sprintf($GLOBALS['_PEAR_PACKAGEFILEMANAGER2_ERRORS'][$this->_options['lang']][$code],
-                    $i1, $i2), $code);
+            sprintf($GLOBALS['_PEAR_PACKAGEFILEMANAGER2_ERRORS'][$this->_options['lang']][$code],
+                $i1, $i2), $code);
     }
 
     /**
@@ -1337,7 +1330,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
                 $diradd = dirname($files['path']);
                 $this->addFile($diradd == '.' ? '/' : $diradd, $files['file'], $atts);
                 if (isset($globalreplacements) &&
-                      !in_array($files['path'], $globalreplaceexceptions, true)) {
+                    !in_array($files['path'], $globalreplaceexceptions, true)) {
                     foreach ($globalreplacements as $task) {
                         $this->addTaskToFile($files['path'], $task);
                     }
@@ -1425,8 +1418,8 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
                 }
                 $atts =
                     array('role' => $myrole,
-                          'baseinstalldir' => $bi,
-                          );
+                        'baseinstalldir' => $bi,
+                    );
                 if (!isset($this->_options['simpleoutput']) || !$this->_options['simpleoutput']) {
                     $md5sum = @md5_file($this->_options['packagedirectory'] . $files['path']);
                     if (!empty($md5sum)) {
@@ -1436,7 +1429,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
                 $diradd = dirname($files['path']);
                 $this->addFile($diradd == '.' ? '/' : $diradd, $files['file'], $atts);
                 if (isset($globalreplacements) &&
-                      !in_array($files['path'], $globalreplaceexceptions, true)) {
+                    !in_array($files['path'], $globalreplaceexceptions, true)) {
                     foreach ($globalreplacements as $task) {
                         $this->addTaskToFile($files['path'], $task);
                     }
@@ -1723,7 +1716,7 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @static
      * @since  1.0.0a1
      */
-    function &_getExistingPackageXML($path, $packagefile = 'package.xml', $options = array())
+    protected static function &_getExistingPackageXML($path, $packagefile = 'package.xml', $options = array())
     {
         if (is_string($path) && is_dir($path)) {
             $contents = false;
@@ -1737,10 +1730,10 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
             }
 
             include_once 'PEAR/PackageFile/Parser/v2.php';
-            $pkg = &new PEAR_PackageFile_Parser_v2();
+            $pkg = new PEAR_PackageFile_Parser_v2();
             $z = &PEAR_Config::singleton();
             $pkg->setConfig($z);
-            $pf = &$pkg->parse($contents, $path . $packagefile, false,
+            $pf = $pkg->parse($contents, $path . $packagefile, false,
                 'PEAR_PackageFileManager2');
             if (PEAR::isError($pf)) {
                 return $pf;
@@ -1797,9 +1790,9 @@ class PEAR_PackageFileManager2 extends PEAR_PackageFile_v2_rw
      * @static
      * @since  1.0.0a1
      */
-    function &_generateNewPackageXML()
+    protected static function &_generateNewPackageXML()
     {
-        $pf = &new PEAR_PackageFileManager2();
+        $pf = new PEAR_PackageFileManager2();
         $pf->_oldPackageFile = false;
         return $pf;
     }

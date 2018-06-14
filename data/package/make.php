@@ -14,7 +14,6 @@
 error_reporting(0);
 require_once __DIR__ . '/PEAR/PackageFileManager2.php';
 require_once 'PEAR.php';
-require_once 'PEAR/PackageFileManager2.php';
 require '../../Panda.php';
 error_reporting(E_ERROR);
 $config['package'] = 'Panda';
