@@ -1,4 +1,5 @@
 <?php
+require_once 'vendor/autoload.php';
 require 'Panda.php';
 
 $file = isset($_GET['file']) ?  $_GET['file'] : false;

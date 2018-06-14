@@ -1,31 +1,9 @@
-README
-======
+# Panda
+[![Build Status](https://travis-ci.org/bearsaturday/Panda.svg?branch=master)](https://travis-ci.org/bearsaturday/Panda)
 
-What is Panda?
------------------
-Panda is a PHP error handler.
+Panda is a PHP error handler for [BEAR.Saturday](https://github.com/bearsaturday/BEAR.Saturday) framework
 
-Requirements
-------------
-Panda is only supported on PHP 5.2 and up.
+# Requirement
 
-Install Panda
--------------
-$ pear channel-discover pear.bear-project.net  
-$ pear install bear/Panda-beta
-
-First Panda
--------------
-1) move data/htdocs/panda_sample under web root directory.
-2) edit papnda_ini.file,
-3) oepn  http://example.com/panda_sample/
-
-Panda Quick Manual
-------------------
-English
-http://code.google.com/p/panda-project/wiki/quickmanualen
-Japanese
-http://code.google.com/p/panda-project/wiki/quickmanual
-
-
-
+ * PHP ^5.4
+ * PHP ^7.0

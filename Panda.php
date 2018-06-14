@@ -346,7 +346,7 @@ class Panda
                 syslog(LOG_INFO, print_r($v, true));
             }
             if (class_exists('PEAR', false)) {
-                PEAR::setErrorHandling(PEAR_Exception);
+                PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, array('Panda', 'onPearError'));
             }
             set_exception_handler(array('Panda', 'onException'));
         } else {
@@ -469,7 +469,7 @@ class Panda
         $userInfo = $error->getUserInfo();
         $trace = ($error->getBackTrace());
         $info = array('Error Type' => $error->getType(),
-            'Debug Info' => $error->getUserInfo());
+            'Debug Info' => '');  //$error->getUserInfo()
         if ($debugInfo !== $userInfo) {
             $info['User Info'] = $userInfo;
         }
@@ -603,8 +603,11 @@ class Panda
      *
      * @return void
      */
-    public static function onException(Exception $e, $httpScreenOutput = true)
+    public static function onException($e, $httpScreenOutput = true)
     {
+        if (! $e instanceof Exception) {
+            throw $e;
+        }
         try {
             $class = get_class($e);
             $body = null;
@@ -811,7 +814,7 @@ class Panda
             $output .= '<h2>' . $subheading . '</h2>';
             $output .= '<p class="panda-cmd">';
             if ($options['trace']) {
-                $output .= '<a target="_panda_trace_' . $traceId . '" href="' . "http://{$_SERVER['SERVER_NAME']}" . self::$_config[self::CONFIG_PANDA_PATH] . '__panda/trace/?id=' . $traceId . '">trace</a> | ';
+                $output .= '<a target="_panda_trace_' . $traceId . '" href="' . self::$_config[self::CONFIG_PANDA_PATH] . '__panda/trace/?id=' . $traceId . '">trace</a> | ';
             }
             $output .= '<a href=# onclick="var t = document.getElementById(\'panda-';
             $output .= $num . '\'); t.parentNode.removeChild(t);return false;">close</a>';
@@ -949,13 +952,15 @@ class Panda
                 if (isset($row['object'])) {
                     $refLog[$i]['export'] = ReflectionObject::export($row['object'], true);
                 }
-                $ref = new ReflectionMethod($row['class'], $row['function']);
-                $refLog[$i]['file'] = $ref->getFileName();
-                $refLog[$i]['doc'] = $ref->getDocComment();
-                $refLog[$i]['start'] = $ref->getStartLine();
-                $refLog[$i]['end'] = $ref->getEndLine();
+                if (method_exists($row['class'], $row['function'])) {
+                    $ref = new ReflectionMethod($row['class'], $row['function']);
+                    $refLog[$i]['file'] = $ref->getFileName();
+                    $refLog[$i]['doc'] = $ref->getDocComment();
+                    $refLog[$i]['start'] = $ref->getStartLine();
+                    $refLog[$i]['end'] = $ref->getEndLine();
+                    $i++;
+                }
             }
-            $i++;
         }
         return $refLog;
     }
