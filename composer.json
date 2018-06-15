@@ -11,21 +11,22 @@
   "repositories": [
     {
       "type": "pear",
-      "url": "http://pear.php.net"
+      "url": "https://pear.php.net"
     }
   ],
   "require": {
-    "php": ">=5.4.0",
-    "pear-pear.php.net/pear": "^1.10"
+      "php": ">=5.4.0",
+      "pear-pear.php.net/pear": "^1.10"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8",
-    "doctrine/instantiator": "~1.0.5"
+      "phpunit/phpunit": "^4.8",
+      "doctrine/instantiator": "~1.0.5"
   },
   "include-path": [
-    "./"
+      "./"
   ],
-  "config":{
-    "secure-http" : false
+  "autoload": {
+      "classmap": ["Panda"],
+      "files": ["./Panda.php"]
   }
 }
