@@ -1281,6 +1281,10 @@ EOD;
         if ($var) {
             return $var;
         }
+        $var = sys_get_temp_dir();
+        if ($var) {
+            return $var;
+        }
         $tempfile = tempnam(uniqid(rand(), true), '');
         if (file_exists($tempfile)) {
             unlink($tempfile);
