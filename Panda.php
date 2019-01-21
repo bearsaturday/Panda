@@ -16,14 +16,6 @@
  * debuglib for PHP5
  * Thomas Schüßler <debuglib at atomar dot de>
  * http://phpdebuglib.de/
- *
- * FireBug
- * http://www.getfirebug.com/
- *
- * FirePHP
- * http://www.christophdorn.com/
- * https://addons.mozilla.org/ja/firefox/addon/6149
- * http://www.firephp.org/
  */
 
 // for 5.2.x or earlier
@@ -118,6 +110,7 @@ class Panda
      * config callback on fire
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_ON_ERROR_FIRED = 'on_error';
 
@@ -139,6 +132,7 @@ class Panda
      * config - use firephp ?
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_ENABLE_FIREPHP = 'firephp';
 
@@ -350,10 +344,6 @@ class Panda
             }
             set_exception_handler(array('Panda', 'onException'));
         } else {
-            if (self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
-                include_once 'FirePHPCore/FirePHP.class.php';
-                include_once 'FirePHPCore/fb.php';
-            }
             self::_initOnDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
                 ob_start(array('Panda', 'onFatalError'));
@@ -377,7 +367,6 @@ class Panda
         require_once 'Panda/Debug.php';
         require_once 'Panda/Debug/util.php';
         require_once 'Panda/Exception.php';
-        include_once 'Net/Growl.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
@@ -743,18 +732,6 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             return;
         }
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
-            if (class_exists('FB', false)) {
-                $in = isset($options['file']) ? "- in {$options['file']} on line {$options['line']}" : '';
-                $msg = "$heading - {$subheading} $in";
-                if ($info) {
-                    FB::group($msg);
-                    FB::error($info);
-                    FB::groupEnd();
-                    return;
-                }
-            }
-        }
         static $num = 1; //div id number
         $heading = (is_numeric($heading)) ? self::$packageName[$heading] : $heading;
         // Application error callback
@@ -762,24 +739,6 @@ class Panda
             call_user_func(self::$_config[self::CONFIG_ON_ERROR_FIRED], $heading, $subheading, $info, $options);
         }
         $fileInfoString = isset($options['file']) ? "in {$options['file']} on line {$options['line']}" : 'in unknown file';
-        if (self::$_config[self::CONFIG_ENABLE_FIREPHP] && isset($options['severity'])) {
-            $fireLevel = FirePHP::ERROR;
-            switch (true) {
-                case ($options['severity'] == E_WARNING || $options['severity'] == E_USER_WARNING) :
-                    $fireLevel = FirePHP::WARN;
-                    break;
-                case ($options['severity'] == E_NOTICE || $options['severity'] == E_USER_NOTICE) :
-                    $fireLevel = FirePHP::INFO;
-                    break;
-                case ($options['severity'] == E_STRICT) :
-                    $fireLevel = FirePHP::LOG;
-                    break;
-                default :
-                    $fireLevel = FirePHP::ERROR;
-                break;
-            }
-            FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
-        }
         self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
@@ -1085,10 +1044,6 @@ EOD;
         // Web
         header("HTTP/1.x 503 Service Temporarily Unavailable.");
         $id = substr(md5(serialize($error)), 0, 6);
-        // FB
-        if (self::$_config[self::CONFIG_DEBUG] === true && self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
-            FB::error("Fatal Error - {$error['message']} - ref# {$id}");
-        }
         // write fatal error in file
         if (self::$_config[self::CONFIG_LOG_PATH]) {
             $path = self::$_config[self::CONFIG_LOG_PATH];
