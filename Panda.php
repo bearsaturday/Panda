@@ -365,9 +365,6 @@ class Panda
      */
     private static function _initOnDebug()
     {
-        require_once 'Panda/Debug.php';
-        require_once 'Panda/Debug/util.php';
-        require_once 'Panda/Exception.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
