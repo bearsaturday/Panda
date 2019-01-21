@@ -45,6 +45,7 @@ class Panda
 {
     /**
      * Version
+     * @deprecated 
      */
     const VERSION =  '0.3.44';
 
