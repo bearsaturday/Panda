@@ -8,7 +8,7 @@
  * @category  Panda
  * @package   Panda
  * @author    Akihito Koriyama <koriyama@users.sourceforge.jp>
- * @copyright 2009 Akihito Koriyama  All rights reserved.
+ * @copyright 2009-2019 Akihito Koriyama  All rights reserved.
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: v.0.1.0 $Id: Panda.php 97 2009-10-08 03:45:58Z koriyama@users.sourceforge.jp $
  * @link      n/a
@@ -42,7 +42,7 @@ if (!defined('E_DEPRECATED')) {
  * @category  Panda
  * @package   Panda
  * @author    Akihito Koriyama <koriyama@users.sourceforge.jp>
- * @copyright 2008 Akihito Koriyama  All rights reserved.
+ * @copyright 2009-2019 Akihito Koriyama  All rights reserved.
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: $Id: Panda.php 97 2009-10-08 03:45:58Z koriyama@users.sourceforge.jp $
  * @link      http://api.Panda-project.net/Panda/Panda.html
