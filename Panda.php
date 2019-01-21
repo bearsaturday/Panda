@@ -18,12 +18,6 @@
  * http://phpdebuglib.de/
  */
 
-// for 5.2.x or earlier
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-    define('E_USER_DEPRECATED', 16384);
-}
-
 /**
  * Panda Class
  *
