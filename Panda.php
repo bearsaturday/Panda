@@ -168,6 +168,7 @@ class Panda
      * config for growl
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_GROWL = 'growl';
 
@@ -739,7 +740,6 @@ class Panda
             call_user_func(self::$_config[self::CONFIG_ON_ERROR_FIRED], $heading, $subheading, $info, $options);
         }
         $fileInfoString = isset($options['file']) ? "in {$options['file']} on line {$options['line']}" : 'in unknown file';
-        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
@@ -806,29 +806,10 @@ class Panda
 
     /**
      * Growl notify
-     *
-     * This needs.
-     *
-     * 1) Growl installation.
-     * 2) Growl setting for remote application acception.
-     *
-     * @param string $title
-     * @param string $description
+     * @deprecated
      */
     public static function growlNotify($title, $description)
     {
-        static $growlApp;
-
-        if (self::CONFIG_GROWL !== true) {
-            return;
-        }
-
-        if (!$growlApp) {
-            $growlApp = new Net_Growl_Application('Panda', array('Panda_Growl_Notify'));
-        }
-        $growl = Net_Growl::singleton($growlApp, null, null);
-        $growl->setNotificationLimit(16);
-        $result = $growl->notify('Panda_Growl_Notify', $title, $description);
     }
 
     /**
