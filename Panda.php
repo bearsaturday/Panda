@@ -806,9 +806,9 @@ class Panda
     /**
      * Message Output
      *
-     * @param string  $heading
-     * @param message $subheading
-     * @param array   $info
+     * @param string $heading
+     * @param string $subheading
+     * @param array  $info
      *
      * @return void
      */
