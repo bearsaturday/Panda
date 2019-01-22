@@ -46,7 +46,7 @@ class Panda_Exception extends ErrorException
     /**
      * Get error info
      *
-     * @return string
+     * @return array
      */
     public function getInfo()
     {
