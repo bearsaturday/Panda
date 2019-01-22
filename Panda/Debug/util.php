@@ -229,16 +229,6 @@ function v($values = null)
         echo $colorOpenPlain . "in {$colorOpenBold}{$file}{$colorClose}{$colorOpenPlain} on line {$line}$method" . $colorClose . "\n";
         return;
     }
-    $labelField = '<fieldset style="color:#4F5155; border:1px solid black;padding:2px;width:10px;">';
-    $labelField .= '<legend style="color:black;font-size:9pt;font-weight:bold;font-family:Verdana,';
-    $labelField .= 'Arial,,SunSans-Regular,sans-serif;">' . $label . '</legend>';
-    if (class_exists('FB', false)) {
-        $label = 'p() in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'];
-        FB::group($label);
-        FB::error($values);
-        FB::groupEnd();
-        return;
-    }
     $pre = "<pre style=\"text-align: left;margin: 0px 0px 10px 0px; display: block; background: white; color: black; ";
     $pre .= "border: 1px solid #cccccc; padding: 5px; font-size: 12px; \">";
     if ($varName != FALSE) {
