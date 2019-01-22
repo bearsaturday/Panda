@@ -17,6 +17,6 @@
     },
     "autoload": {
         "classmap": ["Panda"],
-        "files": ["./Panda.php"]
+        "files": ["./Panda.php", "./Panda/Debug/util.php"]
     }
 }
