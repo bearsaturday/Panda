@@ -54,6 +54,10 @@
  */
 function p($mixed = null, $format = 'dump', array $options = array())
 {
+    $config = Panda::getConfig();
+    if (! isset($config[Panda::CONFIG_DEBUG]) || $config[Panda::CONFIG_DEBUG] === false) {
+        return;
+    }
     if (PHP_SAPI === 'cli') {
         call_user_func('v', func_get_args());
         return;

@@ -331,9 +331,6 @@ class Panda
         // reset handler
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             ini_set('display_errors', 0);
-            function p($v = ''){
-                syslog(LOG_INFO, print_r($v, true));
-            }
             if (class_exists('PEAR', false)) {
                 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, array('Panda', 'onPearError'));
             }
