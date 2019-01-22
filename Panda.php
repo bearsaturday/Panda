@@ -45,7 +45,7 @@ class Panda
 {
     /**
      * Version
-     * @deprecated 
+     * @deprecated
      */
     const VERSION =  '0.3.44';
 
@@ -218,7 +218,7 @@ class Panda
     /**
      * API check
      *
-     * @var
+     * @var string
      */
     const CONFIG_IS_API_CHECK = 'is_api';
 
@@ -262,8 +262,7 @@ class Panda
     /**
      * PHP Error code statics
      *
-     * @var integer
-     *
+     * @var int
      */
     private static $_errorStat = 0;
 
@@ -435,7 +434,6 @@ class Panda
      * @param object $error PEAR Error object
      *
      * @return void
-     * @ignore
      */
     public static function onPearError(PEAR_Error $error)
     {
