@@ -34,7 +34,6 @@ require_once 'vendors/debuglib.php';
  * @author    Akihito Koriyama <koriyama@users.sourceforge.jp>
  * @copyright 2008 Akihito Koriyama  All rights reserved.
  * @license   http://opensource.org/licenses/bsd-license.php BSD
- * @link      n/a
  *
  */
 
@@ -76,8 +75,6 @@ class Panda_Debug
 
     /**
      * new不可
-     *
-     * @ignore
      */
     private function __construct()
     {
@@ -472,7 +469,6 @@ class Panda_Debug
      * @author Akihito Koriyama
      *
      * @link http://www.php.net/manual/ja/function.var-dump.php#76072
-     * @ignore
      */
     private static function _doDump(&$var, $var_name = NULL, $indent = NULL, $reference = NULL)
     {

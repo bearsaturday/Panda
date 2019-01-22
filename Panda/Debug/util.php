@@ -49,11 +49,15 @@
  * Prints human-readable information about a variable with print location and variable name
  *
  * @param mixed   $mixed   variables
- * @param formart $formart 'var' | 'export' | 'printa' | 'fire' | 'syslog'
+ * @param string  $format 'var' | 'export' | 'printa' | 'fire' | 'syslog'
  * @param array   $options
  */
-function p($mixed = null, $formart = 'dump', array $options = array())
+function p($mixed = null, $format = 'dump', array $options = array())
 {
+    $config = Panda::getConfig();
+    if (! isset($config[Panda::CONFIG_DEBUG]) || $config[Panda::CONFIG_DEBUG] === false) {
+        return;
+    }
     if (PHP_SAPI === 'cli') {
         call_user_func('v', func_get_args());
         return;
@@ -67,7 +71,7 @@ function p($mixed = null, $formart = 'dump', array $options = array())
         return;
     }
     $options['trace'] = debug_backtrace();
-    Panda_Debug::p($mixed, $formart, $options);
+    Panda_Debug::p($mixed, $format, $options);
 }
 
 /**
@@ -213,11 +217,6 @@ function v($values = null)
             $paramNum++;
         }
     }
-    $label = "$varName in {$file} on line {$line}$method";
-    if (strlen(serialize($values)) > 1000000) {
-        $ouputMode = 'dump';
-    }
-    $label = (is_object($values)) ? ucwords(get_class($values)) . " $label" : $label;
     // if CLI
     if (PHP_SAPI === 'cli') {
         $colorOpenReverse = "\033[7;32m";
@@ -227,16 +226,6 @@ function v($values = null)
         echo $colorOpenReverse . "$varName" . $colorClose . " = ";
         var_dump($values);
         echo $colorOpenPlain . "in {$colorOpenBold}{$file}{$colorClose}{$colorOpenPlain} on line {$line}$method" . $colorClose . "\n";
-        return;
-    }
-    $labelField = '<fieldset style="color:#4F5155; border:1px solid black;padding:2px;width:10px;">';
-    $labelField .= '<legend style="color:black;font-size:9pt;font-weight:bold;font-family:Verdana,';
-    $labelField .= 'Arial,,SunSans-Regular,sans-serif;">' . $label . '</legend>';
-    if (class_exists('FB', false)) {
-        $label = 'p() in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'];
-        FB::group($label);
-        FB::error($values);
-        FB::groupEnd();
         return;
     }
     $pre = "<pre style=\"text-align: left;margin: 0px 0px 10px 0px; display: block; background: white; color: black; ";

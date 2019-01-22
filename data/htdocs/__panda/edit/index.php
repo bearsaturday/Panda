@@ -1,6 +1,6 @@
 <?php
-require_once 'vendor/autoload.php';
-require 'Panda.php';
+
+set_include_path(get_include_path() . PATH_SEPARATOR . dirname(dirname(__DIR__)) . '/vendor/autoload.php');
 
 $file = isset($_GET['file']) ?  $_GET['file'] : false;
 $line = isset($_GET['line']) ? $_GET['line'] : 0;

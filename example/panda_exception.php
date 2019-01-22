@@ -1,5 +1,5 @@
 <?php
-include 'panda_ini.php';
+require __DIR__ . '/panda_ini.php';
 
 $debugInfo = array('time' => time());
 // show status page with specify http code

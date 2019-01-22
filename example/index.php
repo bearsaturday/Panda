@@ -1,6 +1,8 @@
 <?php
-include 'panda_ini.php';
 
+if (! isset($_GET['nopanda'])) {
+    require __DIR__ . '/panda_ini.php';
+}
 /**
  * Main Class - run 'page'
  *
@@ -38,7 +40,7 @@ class Test_App_Page
     /**
      * Page Static Val
      */
-    static $statcVar = 'this is $statc var';
+    static $statcVar = 'this is $static var';
 
     /*
      * Page Public Val

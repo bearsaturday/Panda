@@ -8,7 +8,7 @@
  * @category  Panda
  * @package   Panda
  * @author    Akihito Koriyama <koriyama@users.sourceforge.jp>
- * @copyright 2009 Akihito Koriyama  All rights reserved.
+ * @copyright 2009-2019 Akihito Koriyama  All rights reserved.
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: v.0.1.0 $Id: Panda.php 97 2009-10-08 03:45:58Z koriyama@users.sourceforge.jp $
  * @link      n/a
@@ -16,21 +16,7 @@
  * debuglib for PHP5
  * Thomas Schüßler <debuglib at atomar dot de>
  * http://phpdebuglib.de/
- *
- * FireBug
- * http://www.getfirebug.com/
- *
- * FirePHP
- * http://www.christophdorn.com/
- * https://addons.mozilla.org/ja/firefox/addon/6149
- * http://www.firephp.org/
  */
-
-// for 5.2.x or earlier
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-    define('E_USER_DEPRECATED', 16384);
-}
 
 /**
  * Panda Class
@@ -50,7 +36,7 @@ if (!defined('E_DEPRECATED')) {
  * @category  Panda
  * @package   Panda
  * @author    Akihito Koriyama <koriyama@users.sourceforge.jp>
- * @copyright 2008 Akihito Koriyama  All rights reserved.
+ * @copyright 2009-2019 Akihito Koriyama  All rights reserved.
  * @license   http://opensource.org/licenses/bsd-license.php BSD
  * @version   SVN: Release: $Id: Panda.php 97 2009-10-08 03:45:58Z koriyama@users.sourceforge.jp $
  * @link      http://api.Panda-project.net/Panda/Panda.html
@@ -59,6 +45,7 @@ class Panda
 {
     /**
      * Version
+     * @deprecated
      */
     const VERSION =  '0.3.44';
 
@@ -118,6 +105,7 @@ class Panda
      * config callback on fire
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_ON_ERROR_FIRED = 'on_error';
 
@@ -139,6 +127,7 @@ class Panda
      * config - use firephp ?
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_ENABLE_FIREPHP = 'firephp';
 
@@ -174,6 +163,7 @@ class Panda
      * config for growl
      *
      * @var string
+     * @deprecated
      */
     const CONFIG_GROWL = 'growl';
 
@@ -228,7 +218,7 @@ class Panda
     /**
      * API check
      *
-     * @var
+     * @var string
      */
     const CONFIG_IS_API_CHECK = 'is_api';
 
@@ -272,8 +262,7 @@ class Panda
     /**
      * PHP Error code statics
      *
-     * @var integer
-     *
+     * @var int
      */
     private static $_errorStat = 0;
 
@@ -342,18 +331,11 @@ class Panda
         // reset handler
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             ini_set('display_errors', 0);
-            function p($v = ''){
-                syslog(LOG_INFO, print_r($v, true));
-            }
             if (class_exists('PEAR', false)) {
                 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, array('Panda', 'onPearError'));
             }
             set_exception_handler(array('Panda', 'onException'));
         } else {
-            if (self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
-                include_once 'FirePHPCore/FirePHP.class.php';
-                include_once 'FirePHPCore/fb.php';
-            }
             self::_initOnDebug();
             if (self::$_config[self::CONFIG_CATCH_FATAL] === true) {
                 ob_start(array('Panda', 'onFatalError'));
@@ -374,10 +356,6 @@ class Panda
      */
     private static function _initOnDebug()
     {
-        require_once 'Panda/Debug.php';
-        require_once 'Panda/Debug/util.php';
-        require_once 'Panda/Exception.php';
-        include_once 'Net/Growl.php';
         ini_set('display_errors', 1);
         // アサーションを有効
         assert_options(ASSERT_ACTIVE, 1);
@@ -453,7 +431,6 @@ class Panda
      * @param object $error PEAR Error object
      *
      * @return void
-     * @ignore
      */
     public static function onPearError(PEAR_Error $error)
     {
@@ -743,18 +720,6 @@ class Panda
         if (self::$_config[self::CONFIG_DEBUG] !== true) {
             return;
         }
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
-            if (class_exists('FB', false)) {
-                $in = isset($options['file']) ? "- in {$options['file']} on line {$options['line']}" : '';
-                $msg = "$heading - {$subheading} $in";
-                if ($info) {
-                    FB::group($msg);
-                    FB::error($info);
-                    FB::groupEnd();
-                    return;
-                }
-            }
-        }
         static $num = 1; //div id number
         $heading = (is_numeric($heading)) ? self::$packageName[$heading] : $heading;
         // Application error callback
@@ -762,25 +727,6 @@ class Panda
             call_user_func(self::$_config[self::CONFIG_ON_ERROR_FIRED], $heading, $subheading, $info, $options);
         }
         $fileInfoString = isset($options['file']) ? "in {$options['file']} on line {$options['line']}" : 'in unknown file';
-        if (self::$_config[self::CONFIG_ENABLE_FIREPHP] && isset($options['severity'])) {
-            $fireLevel = FirePHP::ERROR;
-            switch (true) {
-                case ($options['severity'] == E_WARNING || $options['severity'] == E_USER_WARNING) :
-                    $fireLevel = FirePHP::WARN;
-                    break;
-                case ($options['severity'] == E_NOTICE || $options['severity'] == E_USER_NOTICE) :
-                    $fireLevel = FirePHP::INFO;
-                    break;
-                case ($options['severity'] == E_STRICT) :
-                    $fireLevel = FirePHP::LOG;
-                    break;
-                default :
-                    $fireLevel = FirePHP::ERROR;
-                break;
-            }
-            FB::send("{$subheading} - {$fileInfoString}", $heading, $fireLevel);
-        }
-        self::GrowlNotify($heading, $subheading . "\n{$fileInfoString}");
         $defaultOptions = array('file' => null,
             'line' => null,
             'trace' => array(),
@@ -847,37 +793,18 @@ class Panda
 
     /**
      * Growl notify
-     *
-     * This needs.
-     *
-     * 1) Growl installation.
-     * 2) Growl setting for remote application acception.
-     *
-     * @param string $title
-     * @param string $description
+     * @deprecated
      */
     public static function growlNotify($title, $description)
     {
-        static $growlApp;
-
-        if (self::CONFIG_GROWL !== true) {
-            return;
-        }
-
-        if (!$growlApp) {
-            $growlApp = new Net_Growl_Application('Panda', array('Panda_Growl_Notify'));
-        }
-        $growl = Net_Growl::singleton($growlApp, null, null);
-        $growl->setNotificationLimit(16);
-        $result = $growl->notify('Panda_Growl_Notify', $title, $description);
     }
 
     /**
      * Message Output
      *
-     * @param string  $heading
-     * @param message $subheading
-     * @param array   $info
+     * @param string $heading
+     * @param string $subheading
+     * @param array  $info
      *
      * @return void
      */
@@ -1085,10 +1012,6 @@ EOD;
         // Web
         header("HTTP/1.x 503 Service Temporarily Unavailable.");
         $id = substr(md5(serialize($error)), 0, 6);
-        // FB
-        if (self::$_config[self::CONFIG_DEBUG] === true && self::$_config[self::CONFIG_ENABLE_FIREPHP]) {
-            FB::error("Fatal Error - {$error['message']} - ref# {$id}");
-        }
         // write fatal error in file
         if (self::$_config[self::CONFIG_LOG_PATH]) {
             $path = self::$_config[self::CONFIG_LOG_PATH];
@@ -1220,10 +1143,11 @@ EOD;
                 'body' => $body,
                 'serverProtocol' => $serverProtocol,
                 'id' => $id);
-            $include = include self::$_config[self::CONFIG_HTTP_TPL];
-            if (!$include) {
+            $tpl = self::$_config[self::CONFIG_HTTP_TPL];
+            if (! file_exists($tpl)) {
                 trigger_error('CONFIG_HTTP_TPL file [' . self::$_config[self::CONFIG_HTTP_TPL] . '] is not exist.');
             }
+            include $tpl;
         }
     }
 
