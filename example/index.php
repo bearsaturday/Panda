@@ -1,7 +1,8 @@
 <?php
 
-require __DIR__ . '/panda_ini.php';
-
+if (! isset($_GET['nopanda'])) {
+    require __DIR__ . '/panda_ini.php';
+}
 /**
  * Main Class - run 'page'
  *
