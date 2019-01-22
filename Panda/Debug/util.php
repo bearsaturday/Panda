@@ -49,10 +49,10 @@
  * Prints human-readable information about a variable with print location and variable name
  *
  * @param mixed   $mixed   variables
- * @param formart $formart 'var' | 'export' | 'printa' | 'fire' | 'syslog'
+ * @param string  $format 'var' | 'export' | 'printa' | 'fire' | 'syslog'
  * @param array   $options
  */
-function p($mixed = null, $formart = 'dump', array $options = array())
+function p($mixed = null, $format = 'dump', array $options = array())
 {
     if (PHP_SAPI === 'cli') {
         call_user_func('v', func_get_args());
@@ -67,7 +67,7 @@ function p($mixed = null, $formart = 'dump', array $options = array())
         return;
     }
     $options['trace'] = debug_backtrace();
-    Panda_Debug::p($mixed, $formart, $options);
+    Panda_Debug::p($mixed, $format, $options);
 }
 
 /**
