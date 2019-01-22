@@ -31,8 +31,6 @@ $main->run();
 <ul>
 	<li><a href="utility.php?a=1&msg=hello_panda">panda debug function</a></li>
 </ul>
-<h1>FirePHP supported.</h1>
-<p>firebug console error output on FireFox is also available, open firefox console after install <a href="https://addons.mozilla.org/ja/firefox/addon/6149">FirePHP.</a></p>
 </body>
 </html>
 

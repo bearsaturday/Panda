@@ -1,5 +1,6 @@
 <?php
-include 'panda_ini.php';
+require __DIR__ . '/panda_ini.php';
+
 // memory exhausted error
 $a = array();
 while (1) {
