@@ -3,7 +3,13 @@
 
 Panda is a PHP error handler for [BEAR.Saturday](https://github.com/bearsaturday/BEAR.Saturday) framework
 
-# Requirement
+# Testing
 
- * PHP ^5.4
- * PHP ^7.0
+ * vendor/bin/phpunit
+
+# Run Demo
+
+ * php -S 127.0.0.1:8080 -t example
+
+ See http://127.0.0.1:8080/
+
