@@ -1146,10 +1146,11 @@ EOD;
                 'body' => $body,
                 'serverProtocol' => $serverProtocol,
                 'id' => $id);
-            $include = include self::$_config[self::CONFIG_HTTP_TPL];
-            if (!$include) {
+            $tpl = self::$_config[self::CONFIG_HTTP_TPL];
+            if (! file_exists($tpl)) {
                 trigger_error('CONFIG_HTTP_TPL file [' . self::$_config[self::CONFIG_HTTP_TPL] . '] is not exist.');
             }
+            include $tpl;
         }
     }
 
