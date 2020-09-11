@@ -16,7 +16,7 @@
   ],
   "require": {
       "php": ">=5.4.0",
-      "pear-pear.php.net/pear": "^1.10"
+      "pear.php.net/pear": "^1.10"
   },
   "require-dev": {
       "phpunit/phpunit": "^4.8",
